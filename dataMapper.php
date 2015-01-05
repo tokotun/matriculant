@@ -84,4 +84,6 @@ class MatriculantMapper
 		$matriculant->yearOfBirth = $result['yearOfBirth'];
 		$matriculant->location = 	$result['location'];
     }
+
+    
 }
