@@ -11,6 +11,7 @@ class Matriculant
         'score' => '',
         'yearOfBirth' => '');
     public $id;
+    public $code;
     public $name;
     public $surname;
     public $sex;
@@ -37,7 +38,7 @@ class Matriculant
     public function getName($name)
     {   
         $name = trim($name);
-        $regexp = '/^[А-ЯЁ][а-яё]{1,70}$/u';
+        $regexp = '/^[А-ЯЁ][а-яё]{1,80}$/u';
         if (preg_match($regexp, $name)) {
             $this->name = $name;
         } else {
@@ -49,7 +50,7 @@ class Matriculant
     public function getSurname($surname)
     {   
         $surname = trim($surname);
-        $regexp = '/^[А-ЯЁ][а-яё]{1,50}(-[А-ЯЁ][а-яё]{1,50})?$/u';
+        $regexp = '/^[А-ЯЁ][а-яё]{1,50}(-[А-ЯЁ][а-яё]{1,50})?$/u'; //проверка на двойную фамилию тоже
         if (preg_match($regexp, $surname)) {
             $this->surname = $surname;
         } else {
@@ -73,7 +74,7 @@ class Matriculant
     public function getEmail($email)
     {   
         $email = trim($email);
-        $regexp = '/^[0-9A-Za-z]{1,50}@[0-9a-z]{1,50}.[a-z]{2,4}$/u';
+        $regexp = '/.+@.+\..+/i';
 
         //тут надо будет проверить емэйл на уникальность
 

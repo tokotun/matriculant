@@ -1,6 +1,6 @@
 <?php include('templates/header.php'); ?>
 
-<h1>Регистрация абитуриента</h1>
+<h1><?= $title?></h1>
 
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <fieldset>

@@ -5,10 +5,7 @@
 <table class='table'>
     <thead>
         <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Number Group</th>
-            <th>Score</th>
+            <?= $sort_links?>
         </tr>
     </thead>
     <?php 
