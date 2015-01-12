@@ -58,17 +58,17 @@ function generate_sort_link($sort, $order, $column, $nameColumn)
 
 	$sort_link = '';
 
-	$sort_link .= '<th><a href="' . $_SERVER['PHP_SELF'] . '?sort='. $column .'"';
+	$sort_link .= '<th><a href=' . $_SERVER['PHP_SELF'] . '?sort='. $column;
 	if ($sort == $column){
 		if ($order == 'ASC'){
-			$sort_link .= '"&order=DESC">&#9660;';
+			$sort_link .= '&order=DESC>&#9660;';
 			$sort_link .= $nameColumn . '</a></th>';
 		} else{
-			$sort_link .= '"&order=ASC">&#9650;';
+			$sort_link .= '&order=ASC>&#9650;';
 			$sort_link .= $nameColumn . '</a></th>';
 		}
 	}else {
-		$sort_link .= '"&order=ASC">';
+		$sort_link .= '&order=ASC>';
 		$sort_link .= $nameColumn . '</a></th>';
 	}
 	return $sort_link;

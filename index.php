@@ -6,12 +6,13 @@ include('app/functions.php');
 
 $cur_page = isset($_GET['page']) ? $_GET['page'] : 1; //если номер страницы не указан, то это первая страница
 
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'name';// тут  принимается переменная колонки для сортировки
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'score';// тут  принимается переменная колонки для сортировки
 
-$order = isset($_GET['order']) ? $_GET['order'] : 'ASC';  // и переменная с направлением сортировки
+$order = isset($_GET['order']) ? $_GET['order'] : 'DESC';  // и переменная с направлением сортировки
 
 $dbc = 'mysql:host=' . $db_host . ';dbname=' . $db_name;
 $pdo = new PDO($dbc, $db_user, $db_password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $matriculantMapper = new MatriculantMapper($pdo);
 $pdo = null;
 
@@ -22,4 +23,5 @@ $num_pages = ceil($total/$result_per_page);     //вот столько нам �
 
 $page_links = generate_page_links($sort, $order, $cur_page, $num_pages);
 $sort_links = generate_sort_links($sort, $order);
+
 include('templates/main.php');
