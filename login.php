@@ -1,7 +1,7 @@
 <?php
 include('config.php');
-include('app/Matriculant.php');
-include('app/MatriculantMapper.php');
+include('app/autoloader.php');
+spl_autoload_register('autoloader');
 
 $matriculant = new Matriculant;
 
@@ -13,11 +13,9 @@ if (isset($_COOKIE['id'])) {
 if (isset($_COOKIE['code'])) {
     $matriculant->code = $_COOKIE['code'];
 }
-
 if (isset($_POST['submit'])){
     $matriculant->readPost(); //присваивает в $matriculant значения переданные из $_POST
 }
-
 
 $dbc = 'mysql:host=' . $db_host . ';dbname=' . $db_name;
 $pdo = new PDO($dbc, $db_user, $db_password);

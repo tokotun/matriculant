@@ -2,6 +2,7 @@
 
 function viewTableMatriculant($listMatriculant)
 {
+	//функция используется в ..templates/main.php
     foreach ($listMatriculant as $key => $value) {
         $name =         htmlspecialchars($listMatriculant[$key]['name']);
         $surname =      htmlspecialchars($listMatriculant[$key]['surname']);

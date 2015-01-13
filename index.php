@@ -1,8 +1,8 @@
 <?php
 include('config.php');
-include('app/MatriculantMapper.php');
 include('app/functions.php');
-
+include('app/autoloader.php');
+spl_autoload_register('autoloader');
 
 $cur_page = isset($_GET['page']) ? $_GET['page'] : 1; //если номер страницы не указан, то это первая страница
 

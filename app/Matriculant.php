@@ -21,10 +21,9 @@ class Matriculant
     public $yearOfBirth;
     public $location;
 
-
-
     public function readPost()
-    {
+    {   
+      //получает данные об абитуриентах от формы
         $this->getName($_POST['name']);
         $this->getSurname($_POST['surname']);
         $this->sex = $_POST['sex'];
@@ -92,22 +91,20 @@ class Matriculant
             $this->score = $score;
         } else {
             $this->errors['error'] = true;
-            $this->errors['score'] = 'Баллов не должно быть больше 300 и меньше 0';
+            $this->errors['score'] = 'Баллов не должно быть меньше 0 и больше 300';
         }
     }
 
     public function getYearOfBirth($yearOfBirth)
     {   
         $yearOfBirth = trim($yearOfBirth);
-        $regexp = '/^19[0-9]{2}?$/u'; //формат даты 19хх
+        $regexp = '/^[0-9]{4}?$/u'; //формат даты 19хх
         if (preg_match($regexp, $yearOfBirth)) {
             $this->yearOfBirth = $yearOfBirth;
         } else {
             $this->errors['error'] = true;
-            $this->errors['yearOfBirth'] = 'Формат даты для ввода должен быть - 19хх';
+            $this->errors['yearOfBirth'] = 'Формат даты для ввода должен быть - хххх';
         }
     }
-
-    //тут будут всякие функции на проверку правильности ввода и тому подобное
     
 }
