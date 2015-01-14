@@ -33,6 +33,7 @@ if (($matriculant->errors['error'] == false) && (isset($matriculant->id)) && (is
         $matriculantMapper->readMatriculant($matriculant);
     }
 } else {
+    //сохраняем отправленные данные
     if (isset($_POST['submit'])){
         $matriculantMapper->saveMatriculant($matriculant);
         setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет

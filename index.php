@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include('config.php');                  //тут находятся параметры для подключения к БД
 include('app/functions.php');
 include('app/autoloader.php');
 spl_autoload_register('autoloader');

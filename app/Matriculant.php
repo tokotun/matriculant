@@ -34,6 +34,8 @@ class Matriculant
         $this->location = $_POST['location'];
     }
 
+
+    //далее идут всякие функции проверяющие адекватность введённых данных
     public function getName($name)
     {   
         $name = trim($name);

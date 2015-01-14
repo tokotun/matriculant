@@ -1,54 +1,42 @@
--- phpMyAdmin SQL Dump
--- version 4.1.7
--- http://www.phpmyadmin.net
---
--- Хост: localhost
--- Время создания: Дек 24 2014 г., 00:35
--- Версия сервера: 5.5.34
--- Версия PHP: 5.5.6
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- База данных: `matriculant`
---
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `matriculant`
---
+CREATE DATABASE IF NOT EXISTS `matriculant` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `matriculant`;
 
 CREATE TABLE IF NOT EXISTS `matriculant` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `surname` text NOT NULL,
-  `sex` text NOT NULL,
-  `numberGroup` int(11) NOT NULL,
-  `email` text NOT NULL,
+  `code` int(16) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `surname` varchar(50) NOT NULL,
+  `sex` enum('female','male') NOT NULL,
+  `numberGroup` varchar(5) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `score` int(11) NOT NULL,
-  `yearOfBirth` date NOT NULL,
-  `location` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+  `yearOfBirth` year(4) NOT NULL,
+  `location` enum('notresident','resident') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `email_2` (`email`),
+  UNIQUE KEY `key` (`code`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
---
--- Дамп данных таблицы `matriculant`
---
-
-INSERT INTO `matriculant` (`id`, `name`, `surname`, `sex`, `numberGroup`, `email`, `score`, `yearOfBirth`, `location`) VALUES
-(1, 'Коля', 'Марков', 'male', 456, 'dsfs@yandex.com', 180, '1995-11-11', 'notresident'),
-(5, 'Вася', 'Пупкин', 'male', 744, 'sdfg@mail.com', 198, '1997-02-04', 'notresident'),
-(6, 'Женя', 'Соколова', 'female', 2342, 'fghj@mail.com', 165, '1997-01-05', 'resident'),
-(7, 'Гаврила', 'Смирнов', 'male', 23423, 'sgjg@yandex.ru', 201, '1999-08-12', 'notresident'),
-(8, 'Яков', 'Измайлов', 'male', 1111, 'uhvv@mail.ru', 2342, '1993-02-10', 'notresident');
+INSERT INTO `matriculant` (`id`, `code`, `name`, `surname`, `sex`, `numberGroup`, `email`, `score`, `yearOfBirth`, `location`) VALUES
+(1, 1, 'Коля', 'Марков', 'male', '456', 'dsfs@yandex.com', 180, 1990, 'notresident'),
+(5, 2, 'Вася', 'Пупкин', 'male', '744', 'sdfg@mail.com', 198, 1993, 'notresident'),
+(6, 3, 'Женя', 'Соколова', 'female', '2342', 'fghj@mail.com', 165, 1997, 'resident'),
+(7, 4, 'Гаврила', 'Смирнов', 'male', '23423', 'sgjg@yandex.ru', 201, 1999, 'notresident'),
+(8, 7, 'Яков', 'Измайлов', 'male', '1111', 'uhvv@mail.ru', 234, 1987, 'notresident'),
+(9, 46, 'Вака', 'Мака', 'female', 'ФО-12', 'maka@mail.com', 231, 1996, 'resident'),
+(10, 87, 'Женя', 'Ляпин', 'male', 'КО-22', 'daka@mail.com', 211, 1995, 'notresident'),
+(11, 674962, 'Вася', 'Фомкин', 'male', 'ВП-13', 'erfddfa@gfbf.ru', 189, 1999, 'resident'),
+(12, 704313, 'Антон', 'Феодосин', 'male', 'ВА-13', 'dsdsfsv@gfbf.ru', 156, 1996, 'resident');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

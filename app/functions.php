@@ -2,7 +2,7 @@
 
 function viewTableMatriculant($listMatriculant)
 {
-	//функция используется в ..templates/main.php
+	//функция используется в ..templates/main.php для вывода таблицы
     foreach ($listMatriculant as $key => $value) {
         $name =         htmlspecialchars($listMatriculant[$key]['name']);
         $surname =      htmlspecialchars($listMatriculant[$key]['surname']);
@@ -12,8 +12,9 @@ function viewTableMatriculant($listMatriculant)
     }   
 }
 
-function generate_page_links($sort, $order, $cur_page, $num_pages) //генерирует ссылки на страница абитуринтов
-{ 
+//функция генерирует ссылки на страницу абитуринтов
+function generate_page_links($sort, $order, $cur_page, $num_pages) 
+{   
     if ($num_pages==1) return; //если страница 1, то ссылки не нужны. Выходим из функции
     $page_links = '';
     //если это не первая страница, то создаём знак << со ссылкой
@@ -53,10 +54,9 @@ function generate_page_links($sort, $order, $cur_page, $num_pages) //генер�
     return $page_links;
 }
 
+//ссылки для упорядочивания таблицы
 function generate_sort_link($sort, $order, $column, $nameColumn)
 {
-	//по какой-то причине в GET-запрос идёт только имя,
-
 	$sort_link = '';
 
 	$sort_link .= '<th><a href=' . $_SERVER['PHP_SELF'] . '?sort='. $column;
