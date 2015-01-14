@@ -96,4 +96,20 @@ class MatriculantMapper
         return $total;
     }
     
+     public function uniqueEmail($email)
+     {
+        $sql = "SELECT email FROM matriculant WHERE email=:email";
+        $statment = $this->db->prepare($sql);
+        $statment->bindParam(':email', $email);
+        $statment->execute();
+
+        $result = $statment->fetch();
+        if (empty($result)){
+            //емайл уникален
+            return TRUE;
+        }else{
+            //емайл уже занят
+            return FALSE;
+        }
+     }
 }

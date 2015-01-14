@@ -16,6 +16,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $matriculantMapper = new MatriculantMapper($pdo);
 $pdo = null;
 
+
 $listMatriculant = $matriculantMapper->viewMatriculant($cur_page, $sort, $order, $result_per_page); //берёт список абитуриентов из базы данных
 $total  = $matriculantMapper->totalMatriculant(); //всего записей в таблице
 

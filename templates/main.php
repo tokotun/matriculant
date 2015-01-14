@@ -8,9 +8,14 @@
             <?= $sort_links?>
         </tr>
     </thead>
-    <?php 
-        viewTableMatriculant($listMatriculant); //'<br>Тут будет выведен список студентов из БД';
-    ?>
+    <?php foreach ($listMatriculant as $key => $value): ?>
+    	<tr class="success">
+		    <td><?= htmlspecialchars($listMatriculant[$key]['name']); ?></td>
+		    <td><?= htmlspecialchars($listMatriculant[$key]['surname']); ?></td>
+		    <td><?= htmlspecialchars($listMatriculant[$key]['numberGroup']); ?></td>
+		    <td><?= htmlspecialchars($listMatriculant[$key]['score']); ?></td>
+		</tr>
+    <?php endforeach  ?>
 </table>
     <?= $page_links?>
 

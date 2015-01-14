@@ -1,17 +1,5 @@
 <?php
 
-function viewTableMatriculant($listMatriculant)
-{
-	//функция используется в ..templates/main.php для вывода таблицы
-    foreach ($listMatriculant as $key => $value) {
-        $name =         htmlspecialchars($listMatriculant[$key]['name']);
-        $surname =      htmlspecialchars($listMatriculant[$key]['surname']);
-        $numberGroup =  htmlspecialchars($listMatriculant[$key]['numberGroup']);
-        $score =        htmlspecialchars($listMatriculant[$key]['score']);
-        include('templates/tableMatriculant.php');
-    }   
-}
-
 //функция генерирует ссылки на страницу абитуринтов
 function generate_page_links($sort, $order, $cur_page, $num_pages) 
 {   

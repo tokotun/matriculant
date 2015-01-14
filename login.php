@@ -23,21 +23,31 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $matriculantMapper = new MatriculantMapper($pdo);
 $pdo = null;
 
+//проверка емайла на уникальность
+if (!$matriculantMapper->uniqueEmail($matriculant->email)){
+    $matriculant->notUniqueEmail(); //не уникальный емайл, функция отмечает эту ошибку
+}
+
+
+
 // вывод записи из базы данных или обновление записи в базе данных.
-if (($matriculant->errors['error'] == false) && (isset($matriculant->id)) && (isset($matriculant->code))){
-    //Обновляем в базу данных
-    if (isset($_POST['submit'])){ 
-        $matriculantMapper->updateMatriculant($matriculant);
-    } 
-    else {
-        $matriculantMapper->readMatriculant($matriculant);
-    }
-} else {
-    //сохраняем отправленные данные
-    if (isset($_POST['submit'])){
-        $matriculantMapper->saveMatriculant($matriculant);
-        setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
-        setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
+if ($matriculant->errors['error'] == false){
+    if ((isset($matriculant->id)) && (isset($matriculant->code))){
+            //Обновляем в базу данных
+        if (isset($_POST['submit'])){ 
+                $matriculantMapper->updateMatriculant($matriculant);
+            } 
+            else {
+                $matriculantMapper->readMatriculant($matriculant);
+
+            }
+    } else {
+        //сохраняем отправленные данные
+        if (isset($_POST['submit'])){
+            $matriculantMapper->saveMatriculant($matriculant);
+            setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
+            setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
+        }
     }
 }
 

@@ -109,4 +109,10 @@ class Matriculant
         }
     }
     
+    public function notUniqueEmail()
+    {
+        $this->errors['error'] = true;
+        $this->errors['email']  = 'email адрес уже занят';
+    }
+
 }
