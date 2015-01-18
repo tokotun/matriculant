@@ -57,9 +57,15 @@ class Matriculant
         $this->code = $code;
     }
     public function generateCode(){ 
-        $this->code = mt_rand ( 10000 , 99999 ) . mt_rand ( 10000 , 99999 ) . mt_rand ( 10000 , 99999 );
-    }
+        $this->code ='';
+        $string = "abcdefghijklmnopqrstuvwxyz1234567890";
+        $length = mb_strlen($string);
 
+        for ($i=0; $i < 15 ; $i++) { 
+            $char = mb_substr($string, mt_rand(0,$length-1),1);
+            $this->code.= $char;
+         }
+    }
 
     //далее идут всякие функции проверяющие адекватность введённых данных
     protected function setName($name){ 
