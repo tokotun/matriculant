@@ -1,53 +1,59 @@
 <?php include('templates/header.php'); ?>
 
-<h1><?= $title?></h1>
+<h1><?php if (isset($_COOKIE['id'])):?>Редактирование данных об абитуриенте
+    <?php else                      :?>Регистрация абитуриента
+    <?php endif;?>
+</h1>
 
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <fieldset>
         <label>Имя студента</label>
-        <p class="text-error"><?= $errors['name']?></p>
+        <p class="text-error"><?= $matriculant->errors['name']?></p>
         <input type="text" name="name" 
-            value="<?= $name?>">
+            value="<?= h($matriculant->name)?>">
 
         <label>Фамилия студента</label>
-        <p class="text-error"><?= $errors['surname']?></p>
-        <input type="text" name="surname" value="<?= $surname?>">
+        <p class="text-error"><?= $matriculant->errors['surname']?></p>
+        <input type="text" name="surname" value="<?= h($matriculant->surname)?>">
 
         <label>Пол студента</label>
-        <label class="radio"><input type="radio" name="sex" value="male" checked>М</label>
+        <p class="text-error"><?= $matriculant->errors['sex']?></p>
+        <label class="radio"><input type="radio" name="sex" value="male" 
+            <?php if ($matriculant->sex=='male'): ?>checked<?php endif;?> >М</label>
         <label class="radio"><input type="radio" name="sex" value="female" 
-            <?php if ($sex=='female'): ?>checked<?php endif;?> >Ж</label>
+            <?php if ($matriculant->sex=='female'): ?>checked<?php endif;?> >Ж</label>
 
         <label>Номер группы</label>
-        <p class="text-error"><?= $errors['numberGroup']?></p>
+        <p class="text-error"><?= $matriculant->errors['numberGroup']?></p>
         <input type="text" name="numberGroup" 
-            value="<?= $numberGroup?>">
+            value="<?= h($matriculant->numberGroup)?>">
 
 
         <label>e-mail</label>
-        <p class="text-error"><?= $errors['email']?></p>
-        <input type="text" name="email" value='<?= $email?>'>
+        <p class="text-error"><?= $matriculant->errors['email']?></p>
+        <input type="text" name="email" value='<?= h($matriculant->email)?>'>
         
 
         <label>Суммарное число баллов на ЕГЭ</label>
-        <p class="text-error"><?= $errors['score']?></p>
-        <input type="text" name="score" value="<?= $score?>">
+        <p class="text-error"><?= $matriculant->errors['score']?></p>
+        <input type="text" name="score" value="<?= h($matriculant->score)?>">
 
 
         <label>Год рождения</label>
-        <p class="text-error"><?= $errors['yearOfBirth']?></p>
+        <p class="text-error"><?= $matriculant->errors['yearOfBirth']?></p>
         <input type="text" name="yearOfBirth" 
-            value="<?= $yearOfBirth?>"> 
+            value="<?= h($matriculant->yearOfBirth)?>"> 
 
 
         <label>Местный или иногородный</label>
-        <label class="radio"><input type="radio" name="location" value="resident" checked>Местный</label>
+        <p class="text-error"><?= $matriculant->errors['location']?></p>
+        <label class="radio"><input type="radio" name="location" value="resident"
+            <?php if ($matriculant->location == 'resident'): ?>checked<?php endif; ?>>Местный</label>
         <label class="radio"><input type="radio" name="location" value="notresident" 
-            <?php if ($location == 'notresident'): ?>checked<?php endif; ?> >Иногородний</label>
+            <?php if ($matriculant->location == 'notresident'): ?>checked<?php endif; ?>>Иногородний</label>
 
         <button type="submit" name="submit" class="btn">Отправить</button>
     </fieldset>
 </form>
 
-</body>
-</html>
+<?php include('templates/footer.php'); ?>

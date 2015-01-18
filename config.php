@@ -6,3 +6,13 @@
     $db_password = 'root';
     $db_name = 'matriculant';
     $result_per_page = 5;   //колличество абитуринтов на 1 странице
+    $columns = array(       //определяет какие колонки необходимо выводить
+    		'name' 			=> 'First Name',
+    		'surname'		=> 'Last Name',
+    		//'sex' 			=> 'SEX',
+    		'numberGroup'	=> 'Number Group',
+    		//'email'			=> 'E-Mail',
+    		'score'			=> 'Score',
+    		//'yearOfBirth'	=> 'Year Of Birth', 
+    		//'location'		=> 'The Place Of Residence',
+    );

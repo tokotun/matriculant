@@ -9,10 +9,10 @@ class MatriculantMapper
         $this->db = $db;
     }
 
-    public function bindField($statment, Matriculant $matriculant)
+    protected function bindField($statment, Matriculant $matriculant)
     {
-        if (isset($matriculant->id))  $statment->bindParam(':id', $matriculant->id);
-        if (isset($matriculant->code)) $statment->bindParam(':code', $matriculant->code);
+        if ($matriculant->id <> '')  $statment->bindParam(':id', $matriculant->id);
+        if ($matriculant->code <>'') $statment->bindParam(':code', $matriculant->code);
         $statment->bindParam(':name',       $matriculant->name);
         $statment->bindParam(':surname',    $matriculant->surname);
         $statment->bindParam(':sex',        $matriculant->sex);
@@ -29,7 +29,6 @@ class MatriculantMapper
         $sql = "INSERT INTO matriculant (code, name, surname, sex, numberGroup, email, score, yearOfBirth, location)
         VALUES (:code, :name, :surname, :sex, :numberGroup, :email, :score, :yearOfBirth, :location)";
         $statment = $this->db->prepare($sql);
-        $matriculant->code = mt_rand ( 0 , 2097151 );
         $this->bindField($statment, $matriculant);
         $statment->execute();
         $matriculant->id = $this->db->lastInsertId();
@@ -65,19 +64,24 @@ class MatriculantMapper
         $matriculant->location =    $result['location'];
     }
 
-    public function viewMatriculant($cur_page, $sort, $order, $result_per_page) //выбирает из базы абитуриентов. 
+    public function viewMatriculant($cur_page, $sort, $order, $result_per_page, $columns) //выбирает из базы абитуриентов. 
                     //пременные- номер страницы, способ сортировки, кол-во записей на страницу
     {
         $skip_result = ($cur_page - 1) * $result_per_page;
 
-        $allowed = array("name", "surname", "numberGroup","score"); //перечисляем параметры
+        $allowed = array();
+        foreach ($columns as $keyColumn => $valueColumn) {$allowed[] = $keyColumn;}        //передача названий колонок
+
         $key     = array_search($sort, $allowed); // ищем среди них переданный параметр
-        $orderby = $allowed[$key]; //выбираем найденный (или, за счёт приведения типов - первый) элемент. 
+        $orderBy = $allowed[$key]; //выбираем найденный (или, за счёт приведения типов - первый) элемент. 
         $order   = ($order == 'DESC') ? 'DESC' : 'ASC'; // определяем направление сортировки
                                                         //запрос теперь 100% безопасен
 
+        $selectField = '';
+        foreach ($columns as $keyColumn => $valueColumn) {$selectField .= $keyColumn . ', ';}   //формируется строчка для запроса
+        $selectField = substr($selectField, 0, -2); //удаляем лишнюю запятую в конце
 
-        $sql = "SELECT name, surname, numberGroup, score FROM matriculant ORDER BY $orderby $order LIMIT :skip_result, :result_per_page";
+        $sql = "SELECT " . $selectField . " FROM matriculant ORDER BY $orderBy $order LIMIT :skip_result, :result_per_page";
         $statment = $this->db->prepare($sql);
         $statment->bindParam(':skip_result', $skip_result, PDO::PARAM_INT);
         $statment->bindParam(':result_per_page', $result_per_page, PDO::PARAM_INT);
@@ -88,18 +92,18 @@ class MatriculantMapper
 
     public function totalMatriculant()
     {
-        $sql = "SELECT * FROM matriculant";
+        $sql = "SELECT count(*) FROM matriculant";
         $statment = $this->db->prepare($sql);
         $statment->execute();
-
-        $total = $statment->rowCount();
-        return $total;
+        $total = $statment->fetch();
+        return $total[0];
     }
     
-     public function uniqueEmail($email)
+     public function checkUniquenessEmail($email)
      {
-        $sql = "SELECT email FROM matriculant WHERE email=:email";
+        $sql = "SELECT email FROM matriculant WHERE email=:email and id<>:id";
         $statment = $this->db->prepare($sql);
+        $statment->bindParam(':id', $this->id);
         $statment->bindParam(':email', $email);
         $statment->execute();
 

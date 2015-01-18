@@ -1,4 +1,7 @@
 <?php
 function autoloader($class) {
-    include 'app/' . $class . '.php';
+	if (file_exists('app/' . $class . '.php'))
+	{
+		include 'app/' . $class . '.php';
+	}
 }

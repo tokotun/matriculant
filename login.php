@@ -1,66 +1,53 @@
 <?php
-include('config.php');
-include('app/autoloader.php');
+include 'config.php';
+include 'app/functions.php';
+include 'app/autoloader.php';
 spl_autoload_register('autoloader');
 
 $matriculant = new Matriculant;
 
-$title = "Регистрация абитуриента";         //Переменная для шаблона 'templates/profile.php'
-if (isset($_COOKIE['id'])) {
-    $matriculant->id = $_COOKIE['id'];
-    $title = "Редактирование данных об абитуриенте";  //Переменная для шаблона 'templates/profile.php'
-}
-if (isset($_COOKIE['code'])) {
-    $matriculant->code = $_COOKIE['code'];
-}
+    /*в 'app/getLoginData.php'. Данные из $_POST и $_COOKIE записываются в $sentData 
+      для последующей передачи в класс Matriculant */
+include 'app/getLoginData.php';                  
+    //тут вышел массив $sentDatа
+
 if (isset($_POST['submit'])){
-    $matriculant->readPost(); //присваивает в $matriculant значения переданные из $_POST
+    $matriculant->setData($sentData); //присваивает в $matriculant значения переданные из $sentData
+    $matriculant->validateData();
 }
 
-$dbc = 'mysql:host=' . $db_host . ';dbname=' . $db_name;
-$pdo = new PDO($dbc, $db_user, $db_password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$matriculantMapper = new MatriculantMapper($pdo);
-$pdo = null;
+require_once('app/boostrap.php');
 
 //проверка емайла на уникальность
-if (!$matriculantMapper->uniqueEmail($matriculant->email)){
-    $matriculant->notUniqueEmail(); //не уникальный емайл, функция отмечает эту ошибку
+if ($matriculant->errors['error'] == false){
+    if (!$matriculantMapper->checkUniquenessEmail($matriculant->email)){
+        $matriculant->setNotUniqueEmailError(); //не уникальный емайл, функция отмечает эту ошибку
+    }
 }
-
 
 
 // вывод записи из базы данных или обновление записи в базе данных.
 if ($matriculant->errors['error'] == false){
-    if ((isset($matriculant->id)) && (isset($matriculant->code))){
+    if (($matriculant->id <> '') && ($matriculant->code <> '')){
             //Обновляем в базу данных
         if (isset($_POST['submit'])){ 
                 $matriculantMapper->updateMatriculant($matriculant);
             } 
             else {
-                $matriculantMapper->readMatriculant($matriculant);
 
+                $matriculantMapper->readMatriculant($matriculant);
             }
     } else {
         //сохраняем отправленные данные
         if (isset($_POST['submit'])){
+            $matriculant->generateCode();
+            
             $matriculantMapper->saveMatriculant($matriculant);
             setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
             setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
         }
     }
 }
-
-    //Эти переменные используются в шаблоне.
-    $name =         htmlspecialchars($matriculant->name);
-    $surname =      htmlspecialchars($matriculant->surname);
-    $sex =          $matriculant->sex;
-    $numberGroup =  htmlspecialchars($matriculant->numberGroup);
-    $email =        htmlspecialchars($matriculant->email);
-    $score =        htmlspecialchars($matriculant->score);
-    $yearOfBirth =  htmlspecialchars($matriculant->yearOfBirth);
-    $location =     $matriculant->location;
-    $errors =       $matriculant->errors;
     
 
-include('templates/profile.php');
+include 'templates/profile.php';

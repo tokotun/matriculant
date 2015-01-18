@@ -1,14 +1,5 @@
 <?php
-
-function h($string)
-{
-    return htmlspecialchars($string, ENT_QUOTES);
-}
-
-function getLoginData(){
     $sentData = array();
-    $nameField = array('name','surname','sex','numberGroup','email','score','yearOfBirth','location');
-    
     //данные из кук
     if (isset($_COOKIE['id'])) {
         $sentData['id'] = $_COOKIE['id'];
@@ -24,7 +15,8 @@ function getLoginData(){
 
     //данные из пост
     $nameField = array('name','surname','sex','numberGroup','email','score','yearOfBirth','location');
-    
+
+
     foreach ($nameField as $value)
     {
         if (isset($_POST[$value])) 
@@ -36,5 +28,3 @@ function getLoginData(){
             $sentData[$value] = '';
         }
     }
-}
-
