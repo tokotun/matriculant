@@ -9,18 +9,18 @@ class MatriculantMapper
         $this->db = $db;
     }
 
-    protected function bindField($statment, Matriculant $matriculant)
+    protected function bindField($statment, Matriculant $matriculant, $needId = FALSE, $needCode = FALSE)
     {
-        if ($matriculant->id <> '')  $statment->bindParam(':id', $matriculant->id);
-        if ($matriculant->code <>'') $statment->bindParam(':code', $matriculant->code);
-        $statment->bindParam(':name',       $matriculant->name);
-        $statment->bindParam(':surname',    $matriculant->surname);
-        $statment->bindParam(':sex',        $matriculant->sex);
-        $statment->bindParam(':numberGroup', $matriculant->numberGroup);
-        $statment->bindParam(':email',      $matriculant->email);
-        $statment->bindParam(':score',      $matriculant->score);
-        $statment->bindParam(':yearOfBirth', $matriculant->yearOfBirth);
-        $statment->bindParam(':location',   $matriculant->location);
+        if ( $needId )  $statment->bindValue(':id', $matriculant->id);
+        if ( $needCode ) $statment->bindValue(':code', $matriculant->code);
+        $statment->bindValue(':name',       $matriculant->name);
+        $statment->bindValue(':surname',    $matriculant->surname);
+        $statment->bindValue(':sex',        $matriculant->sex);
+        $statment->bindValue(':numberGroup', $matriculant->numberGroup);
+        $statment->bindValue(':email',      $matriculant->email);
+        $statment->bindValue(':score',      $matriculant->score);
+        $statment->bindValue(':yearOfBirth', $matriculant->yearOfBirth);
+        $statment->bindValue(':location',   $matriculant->location);
     }
 
 
@@ -29,7 +29,7 @@ class MatriculantMapper
         $sql = "INSERT INTO matriculant (code, name, surname, sex, numberGroup, email, score, yearOfBirth, location)
         VALUES (:code, :name, :surname, :sex, :numberGroup, :email, :score, :yearOfBirth, :location)";
         $statment = $this->db->prepare($sql);
-        $this->bindField($statment, $matriculant);
+        $this->bindField($statment, $matriculant, FALSE, TRUE);
         $statment->execute();
         $matriculant->id = $this->db->lastInsertId();
     }
@@ -40,20 +40,20 @@ class MatriculantMapper
         numberGroup=:numberGroup, email=:email, score=:score, yearOfBirth=:yearOfBirth, 
         location=:location WHERE id=:id and code=:code";
         $statment = $this->db->prepare($sql);
-        $this->bindField($statment, $matriculant);
+        $this->bindField($statment, $matriculant, TRUE, TRUE);
         $statment->execute();
     }
 
     public function readMatriculant(Matriculant $matriculant)
     {   
+
         $sql = "SELECT * FROM matriculant WHERE id=:id and code=:code";
         $statment = $this->db->prepare($sql);
-        $statment->bindParam(':id', $matriculant->id);
-        $statment->bindParam(':code', $matriculant->code);
+        $statment->bindValue(':id', $matriculant->id);
+        $statment->bindValue(':code', $matriculant->code);
         $statment->execute();
 
         $result = $statment->fetch();
-
         $matriculant->name =        $result['name'];
         $matriculant->surname =     $result['surname'];
         $matriculant->sex =         $result['sex'];

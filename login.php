@@ -9,10 +9,10 @@ $matriculant = new Matriculant;
     /*в 'app/getLoginData.php'. Данные из $_POST и $_COOKIE записываются в $sentData 
       для последующей передачи в класс Matriculant */
 include 'app/getLoginData.php';                  
-    //тут вышел массив $sentDatа
-
+    //тут вышел массив $sentData
+$matriculant->setData($sentData);
 if (isset($_POST['submit'])){
-    $matriculant->setData($sentData); //присваивает в $matriculant значения переданные из $sentData
+     //присваивает в $matriculant значения переданные из $sentData
     $matriculant->validateData();
 }
 
@@ -25,29 +25,28 @@ if ($matriculant->errors['error'] == false){
     }
 }
 
-
 // вывод записи из базы данных или обновление записи в базе данных.
-if ($matriculant->errors['error'] == false){
-    if (($matriculant->id <> '') && ($matriculant->code <> '')){
+
+if (isset($_POST['submit'])){
+
+    if ($matriculant->errors['error'] == false){
+        
+        if (($matriculant->id <> '') && ($matriculant->code <> ''))  
             //Обновляем в базу данных
-        if (isset($_POST['submit'])){ 
+            { 
                 $matriculantMapper->updateMatriculant($matriculant);
             } 
-            else {
-
-                $matriculantMapper->readMatriculant($matriculant);
-            }
-    } else {
+        } else {
         //сохраняем отправленные данные
-        if (isset($_POST['submit'])){
+        {
             $matriculant->generateCode();
-            
             $matriculantMapper->saveMatriculant($matriculant);
             setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
             setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
         }
     }
+}else{
+    $matriculantMapper->readMatriculant($matriculant);
 }
-    
 
 include 'templates/profile.php';

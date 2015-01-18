@@ -37,7 +37,7 @@
         <?php if ($pager->curentPage == $text): ?>
             <?= $text; ?>
         <?php else: ?>
-            <a href="<?= $link; ?>"><?= $text; ?></a>
+            <a href="<?= h($link); ?>"><?= $text; ?></a>
         <?php endif; ?>
     <?php endforeach ?>
 
