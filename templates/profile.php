@@ -8,11 +8,9 @@
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <fieldset>
         <p class="text-error"><!-- ошибка выводится если форма была отправлена -->
-            <?php if (isset($_POST['submit'])): ?>
                 <?= $matriculant->errors['touken'] ?>
-            <?php endif;?>
         </p>
-        <?php $matriculant->code = $matriculant->code?>
+            <?php $matriculant->code = $matriculant->code . '1';?>
         <input type="hidden" name="touken" value="<?= h($matriculant->code)?>">
 
         <label>Имя студента</label>

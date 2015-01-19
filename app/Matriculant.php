@@ -39,6 +39,7 @@ class Matriculant
         $this->setScore($sentData['score']);
         $this->setYearOfBirth($sentData['yearOfBirth']);
         $this->setLocation($sentData['location']);
+
     }
 
     public function validateData(){
@@ -51,6 +52,7 @@ class Matriculant
         $this->validateScore();
         $this->validateYearOfBirth();
         $this->validateLocation();
+
     }
 
     protected function setId($id){ 
@@ -65,7 +67,7 @@ class Matriculant
         $string = "abcdefghijklmnopqrstuvwxyz1234567890";
         $length = mb_strlen($string);
 
-        for ($i=0; $i < 15 ; $i++) { 
+        for ($i=0; $i < 16 ; $i++) { 
             $char = mb_substr($string, mt_rand(0,$length-1),1);
             $this->code.= $char;
          }

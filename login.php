@@ -29,7 +29,7 @@ if ($matriculant->errors['error'] == false){
 // вывод записи из базы данных или обновление записи в базе данных.
 //Лесницу из условий нагородил      =(
 if  ((isset($_POST['submit'])) and               //для обновления нужено нахатие на кнопку...
-    ($matriculant->errors['touken'] == '')){     //... и токен
+    ($matriculant->errors['touken'] == '')){     //... и токен соответствующий ключу
 
     if ($matriculant->errors['error'] == false) {        
         if (($matriculant->id <> '') && ($matriculant->code <> ''))        
@@ -44,5 +44,6 @@ if  ((isset($_POST['submit'])) and               //для обновления �
     }
 }else{
     $matriculantMapper->readMatriculant($matriculant);
+    if  (!isset($_POST['submit']))    $matriculant->errors['touken'] = '';                        
 }
 include 'templates/profile.php';
