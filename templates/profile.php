@@ -7,6 +7,14 @@
 
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <fieldset>
+        <p class="text-error"><!-- ошибка выводится если форма была отправлена -->
+            <?php if (isset($_POST['submit'])): ?>
+                <?= $matriculant->errors['touken'] ?>
+            <?php endif;?>
+        </p>
+        <?php $matriculant->code = $matriculant->code?>
+        <input type="hidden" name="touken" value="<?= h($matriculant->code)?>">
+
         <label>Имя студента</label>
         <p class="text-error"><?= $matriculant->errors['name']?></p>
         <input type="text" name="name" 
@@ -51,6 +59,7 @@
             <?php if ($matriculant->location == 'resident'): ?>checked<?php endif; ?>>Местный</label>
         <label class="radio"><input type="radio" name="location" value="notresident" 
             <?php if ($matriculant->location == 'notresident'): ?>checked<?php endif; ?>>Иногородний</label>
+
 
         <button type="submit" name="submit" class="btn">Отправить</button>
     </fieldset>

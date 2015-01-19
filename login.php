@@ -10,6 +10,7 @@ $matriculant = new Matriculant;
       для последующей передачи в класс Matriculant */
 include 'app/getLoginData.php';                  
     //тут вышел массив $sentData
+
 $matriculant->setData($sentData);
 if (isset($_POST['submit'])){
      //присваивает в $matriculant значения переданные из $sentData
@@ -26,19 +27,15 @@ if ($matriculant->errors['error'] == false){
 }
 
 // вывод записи из базы данных или обновление записи в базе данных.
+//Лесницу из условий нагородил      =(
+if  ((isset($_POST['submit'])) and               //для обновления нужено нахатие на кнопку...
+    ($matriculant->errors['touken'] == '')){     //... и токен
 
-if (isset($_POST['submit'])){
-
-    if ($matriculant->errors['error'] == false){
-        
-        if (($matriculant->id <> '') && ($matriculant->code <> ''))  
-            //Обновляем в базу данных
-            { 
-                $matriculantMapper->updateMatriculant($matriculant);
-            } 
-        } else {
-        //сохраняем отправленные данные
-        {
+    if ($matriculant->errors['error'] == false) {        
+        if (($matriculant->id <> '') && ($matriculant->code <> ''))        
+        {       //Обновляем в базу данных
+            $matriculantMapper->updateMatriculant($matriculant);
+        }else{  //сохраняем отправленные данные
             $matriculant->generateCode();
             $matriculantMapper->saveMatriculant($matriculant);
             setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
@@ -48,5 +45,4 @@ if (isset($_POST['submit'])){
 }else{
     $matriculantMapper->readMatriculant($matriculant);
 }
-
 include 'templates/profile.php';

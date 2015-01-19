@@ -6,7 +6,7 @@
     <thead>
         <tr>
         <!-- тут выводятся заголовки колонок           -->
-            <?php foreach ($columns as $key => $value): ?>
+            <?php foreach ($columns as $key => $value): ?> <!-- находится в config.php -->
                 <th><a href='<?= h($pager->getSortLink($key)); ?>'><?= $pager->getArrow($key); ?><?=$value ?></a></th>
             <?php endforeach  ?>
         </tr>
@@ -35,9 +35,9 @@
 <!-- формируем циферки со ссылками на странички           -->
     <?php foreach ($pager->getLinks() as $text => $link): ?>
         <?php if ($pager->curentPage == $text): ?>
-            <?= $text; ?>
+            <?= h($text); ?>
         <?php else: ?>
-            <a href="<?= h($link); ?>"><?= $text; ?></a>
+            <a href="<?= h($link); ?>"><?= h($text); ?></a>
         <?php endif; ?>
     <?php endforeach ?>
 

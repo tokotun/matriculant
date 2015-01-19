@@ -12,6 +12,12 @@
     }else{
         $sentData['code'] = '';
     }
+    
+    if (isset($_POST['touken'])) {
+        $sentData['touken'] = $_POST['touken'];
+    }else{
+        $sentData['touken'] = '';
+    }
 
     //данные из пост
     $nameField = array('name','surname','sex','numberGroup','email','score','yearOfBirth','location');

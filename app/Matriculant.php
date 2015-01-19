@@ -4,6 +4,7 @@ class Matriculant
 {
     public $errors = array(
         'error' => false,
+        'touken' => '',
         'name' => '',
         'surname' => '',
         'sex' => '',
@@ -14,6 +15,7 @@ class Matriculant
         'location' => '');
     public $id;
     public $code;
+    public $touken;
     public $name;
     public $surname;
     public $sex;
@@ -28,6 +30,7 @@ class Matriculant
       //получает данные об абитуриентах от формы
         $this->setId($sentData['id']);
         $this->setCode($sentData['code']);
+        $this->setTouken($sentData['touken']);
         $this->setName($sentData['name']);
         $this->setSurname($sentData['surname']);
         $this->setSex($sentData['sex']);
@@ -39,6 +42,7 @@ class Matriculant
     }
 
     public function validateData(){
+        $this->validateTouken();
         $this->validateName();
         $this->validateSurname();
         $this->validateSex();
@@ -65,6 +69,17 @@ class Matriculant
             $char = mb_substr($string, mt_rand(0,$length-1),1);
             $this->code.= $char;
          }
+    }
+
+
+    protected function setTouken($touken){ 
+        $this->touken = $touken;
+    }
+    protected function validateTouken(){ 
+        if ($this->code <> $this->touken) {
+            $this->errors['error'] = true;
+            $this->errors['touken']  = 'Тоукен невалиден';
+        }
     }
 
     //далее идут всякие функции проверяющие адекватность введённых данных

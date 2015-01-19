@@ -14,6 +14,8 @@ Class Pager
 		$this->order 		= $order;
 	}
 
+
+//формирует линк с данными для сортировки
 	function getLinks()
 	{
 		if ($this->countPage==1) return ''; //если страница 1, то ссылки не нужны. Выходим из функции
