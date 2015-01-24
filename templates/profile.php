@@ -75,7 +75,7 @@
             <?php if ($matriculant->location == 'notresident'): ?>checked<?php endif; ?>>Иногородний</label>
        
 
-        <button type="submit" name="submit" class="btn">Отправить</button>
+        <button type="submit" name="submit" class="btn btn-primary">Отправить</button>
     </fieldset>
 </form>
 </div>
