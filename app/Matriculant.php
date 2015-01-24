@@ -4,7 +4,6 @@ class Matriculant
 {
     public $errors = array(
         'error' => false,
-        'touken' => '',
         'name' => '',
         'surname' => '',
         'sex' => '',
@@ -13,24 +12,22 @@ class Matriculant
         'score' => '',
         'yearOfBirth' => '',
         'location' => '');
-    public $id;
-    public $code;
-    public $touken;
-    public $name;
-    public $surname;
-    public $sex;
-    public $numberGroup;
-    public $email;
-    public $score;
-    public $yearOfBirth;
-    public $location;
+    public $id = '';
+    public $code = '';
+    public $name = '';
+    public $surname = '';
+    public $sex = '';
+    public $numberGroup = '';
+    public $email = '';
+    public $score = '';
+    public $yearOfBirth = '';
+    public $location = '';
 
     public function setData($sentData)
     {   
       //получает данные об абитуриентах от формы
         $this->setId($sentData['id']);
         $this->setCode($sentData['code']);
-        $this->setTouken($sentData['touken']);
         $this->setName($sentData['name']);
         $this->setSurname($sentData['surname']);
         $this->setSex($sentData['sex']);
@@ -43,7 +40,6 @@ class Matriculant
     }
 
     public function validateData(){
-        $this->validateTouken();
         $this->validateName();
         $this->validateSurname();
         $this->validateSex();
@@ -73,17 +69,6 @@ class Matriculant
          }
     }
 
-
-    protected function setTouken($touken){ 
-        $this->touken = $touken;
-    }
-    protected function validateTouken(){ 
-        if ($this->code <> $this->touken) {
-            $this->errors['error'] = true;
-            $this->errors['touken']  = 'Тоукен невалиден';
-        }
-    }
-
     //далее идут всякие функции проверяющие адекватность введённых данных
     protected function setName($name){ 
         $name = trim($name);
@@ -95,6 +80,7 @@ class Matriculant
             $this->errors['error'] = true;
             $this->errors['name']  = 'Неверно введено имя';
         }
+        if ($this->name =='') $this->errors['name']  = 'Необходимо заполнить это поле';
     }
 
     protected function setSurname($surname){
@@ -108,6 +94,7 @@ class Matriculant
             $this->errors['error'] = true;
             $this->errors['surname']  = 'Неправильно введена фамилия';
         }
+        if ($this->surname =='') $this->errors['surname']  = 'Необходимо заполнить это поле';
     }
 
     protected function setSex($sex){
@@ -130,6 +117,7 @@ class Matriculant
             $this->errors['error'] = true;
             $this->errors['numberGroup']  = 'Неверно введен номер группы';
         }
+        if ($this->numberGroup =='') $this->errors['numberGroup']  = 'Необходимо заполнить это поле';
     }
 
     protected function setEmail($email){   
@@ -142,17 +130,22 @@ class Matriculant
             $this->errors['error'] = true;
             $this->errors['email']  = 'Неверный формат email адреса';
         }
+        if ($this->email =='') $this->errors['email']  = 'Необходимо заполнить это поле';
     }
 
     protected function setScore($score)
     {   
+        
         $this->score = $score;   
     }
     protected function validateScore(){
-        if (($this->score < 0) && ($this->score > 300)) {
+
+        if (($this->score < 0) && ($this->score > 300) or ($this->score == '')) {
+            
             $this->errors['error'] = true;
             $this->errors['score'] = 'Баллов не должно быть меньше 0 и больше 300';
         }
+        if ($this->score =='') $this->errors['score']  = 'Необходимо заполнить это поле';
     }
 
     protected function setYearOfBirth($yearOfBirth){   
@@ -165,6 +158,7 @@ class Matriculant
             $this->errors['error'] = true;
             $this->errors['yearOfBirth'] = 'Формат даты для ввода должен быть - хххх';
         }
+        if ($this->yearOfBirth =='') $this->errors['yearOfBirth']  = 'Необходимо заполнить это поле';
     }
 
     protected function setLocation($location)
@@ -185,4 +179,25 @@ class Matriculant
         $this->errors['email']  = 'email адрес уже занят';
     }
 
+    function setResult($result){
+        foreach ($result as $key => $value){
+            $this->{$key} =            $result[$key];
+        }
+            // $this->id =          $result['id'];
+            // $this->code =        $result['code'];
+            // $this->name =        $result['name'];
+            // $this->surname =     $result['surname'];
+            // $this->sex =         $result['sex'];
+            // $this->numberGroup = $result['numberGroup'];
+            // $this->email =       $result['email'];
+            // $this->score =       $result['score'];
+            // $this->yearOfBirth = $result['yearOfBirth'];
+            // $this->location =    $result['location'];   
+    }
+
+    public function rewriteMatriculant($sentData){
+        foreach ($sentData as $key => $value){
+            if ($sentData[$key] <> '')  $this->{$key} = $sentData[$key];
+        }
+    }
 }

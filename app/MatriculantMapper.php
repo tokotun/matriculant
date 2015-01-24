@@ -44,30 +44,21 @@ class MatriculantMapper
         $statment->execute();
     }
 
-    public function readMatriculant(Matriculant $matriculant)
+    public function readMatriculant($id, $code)
     {   
-
         $sql = "SELECT * FROM matriculant WHERE id=:id and code=:code";
         $statment = $this->db->prepare($sql);
-        $statment->bindValue(':id', $matriculant->id);
-        $statment->bindValue(':code', $matriculant->code);
+        $statment->bindValue(':id', $id);
+        $statment->bindValue(':code', $code);
         $statment->execute();
-
-        $result = $statment->fetch();
-        $matriculant->name =        $result['name'];
-        $matriculant->surname =     $result['surname'];
-        $matriculant->sex =         $result['sex'];
-        $matriculant->numberGroup = $result['numberGroup'];
-        $matriculant->email =       $result['email'];
-        $matriculant->score =       $result['score'];
-        $matriculant->yearOfBirth = $result['yearOfBirth'];
-        $matriculant->location =    $result['location'];
+        
+        return $result = $statment->fetch(PDO::FETCH_ASSOC);   
     }
 
-    public function viewMatriculant($cur_page, $sort, $order, $result_per_page, $columns) //выбирает из базы абитуриентов. 
+    public function viewMatriculant($curPage, $sort, $order, $userSearch, $resultPerPage, $columns) //выбирает из базы абитуриентов. 
                     //пременные- номер страницы, способ сортировки, кол-во записей на страницу
     {
-        $skip_result = ($cur_page - 1) * $result_per_page;
+        $skipResult = ($curPage - 1) * $resultPerPage;
 
         $allowed = array();
         foreach ($columns as $keyColumn => $valueColumn) {$allowed[] = $keyColumn;}        //передача названий колонок
@@ -76,29 +67,51 @@ class MatriculantMapper
         $orderBy = $allowed[$key]; //выбираем найденный (или, за счёт приведения типов - первый) элемент. 
         $order   = ($order == 'DESC') ? 'DESC' : 'ASC'; // определяем направление сортировки
                                                         //запрос теперь 100% безопасен
-
-        $selectField = '';
-        foreach ($columns as $keyColumn => $valueColumn) {$selectField .= $keyColumn . ', ';}   //формируется строчка для запроса
-        $selectField = substr($selectField, 0, -2); //удаляем лишнюю запятую в конце
-
-        $sql = "SELECT " . $selectField . " FROM matriculant ORDER BY $orderBy $order LIMIT :skip_result, :result_per_page";
+        $search = "%$userSearch%";
+        $sql = "SELECT * FROM matriculant WHERE name LIKE ? OR surname LIKE ? OR numberGroup LIKE ? OR score LIKE ? ORDER BY $orderBy $order LIMIT ?, ?";
         $statment = $this->db->prepare($sql);
-        $statment->bindParam(':skip_result', $skip_result, PDO::PARAM_INT);
-        $statment->bindParam(':result_per_page', $result_per_page, PDO::PARAM_INT);
+        $statment->bindParam(1, $search);
+        $statment->bindParam(2, $search);
+        $statment->bindParam(3, $search);
+        $statment->bindParam(4, $search);
+        $statment->bindParam(5, $skipResult, PDO::PARAM_INT);
+        $statment->bindParam(6, $resultPerPage, PDO::PARAM_INT);
         $statment->execute();
         $result = $statment->fetchAll();
         return $result;
     }
 
-    public function totalMatriculant()
+    public function totalMatriculant($userSearch)
     {
-        $sql = "SELECT count(*) FROM matriculant";
+
+        $sql = "SELECT count(*) FROM matriculant WHERE name LIKE ? OR surname LIKE ? OR numberGroup LIKE ? OR score LIKE ?";
         $statment = $this->db->prepare($sql);
+        $search = "%$userSearch%";
+        $statment->bindParam(1, $search);
+        $statment->bindParam(2, $search);
+        $statment->bindParam(3, $search);
+        $statment->bindParam(4, $search);
         $statment->execute();
+        
         $total = $statment->fetch();
         return $total[0];
+        
     }
     
+    public function checkUser(Matriculant $matriculant)
+    {   
+        $sql = "SELECT * FROM matriculant WHERE id=:id and code=:code";
+        $statment = $this->db->prepare($sql);
+        $statment->bindValue(':id', $matriculant->id);
+        $statment->bindValue(':code', $matriculant->code);
+        $statment->execute();
+        $result = $statment->fetch();
+        if ($result) {
+            return TRUE;
+        }else{
+            return FALSE;}
+    }
+
      public function checkUniquenessEmail($email)
      {
         $sql = "SELECT email FROM matriculant WHERE email=:email and id<>:id";
@@ -115,5 +128,5 @@ class MatriculantMapper
             //емайл уже занят
             return FALSE;
         }
-     }
+    }
 }
