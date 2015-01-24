@@ -34,22 +34,23 @@ if ($matriculant->errors['error'] == false){
 
 //Лесницу из условий нагородил      =(
 
-if  (isset($_POST['submit'])){   
+if  ((isset($_POST['submit'])) and ($matriculant->errors['error'] == false)){   
 
     //Обновляем в базу данных если токен валиден
-    if (validateToken()) {      
+    if (validateToken()) { 
         $matriculantMapper->updateMatriculant($matriculant);
-    } elseif ($matriculant->errors['error'] == false) { //если не произошло обновление то пытаемся сохранить.
+
+    } else { //если не произошло обновление то пытаемся сохранить.
         //Cохраняем отправленные данные
         if (($matriculant->id == '') && ($matriculant->code == '')){  
             $matriculant->generateCode();
             $matriculantMapper->saveMatriculant($matriculant);
             setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
             setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет    
-        }   
-    } else { //если не произошло ни обновление ни  сохранение, то отправляем ошибку
-        $errorToken = 'Произошла ошибка. Пожалуйста, попробуйте отправить форму еще раз.';
-    }
+        } else { //если не произошло ни обновление ни  сохранение, то отправляем ошибку
+            $errorToken = 'Произошла ошибка. Пожалуйста, попробуйте отправить форму еще раз.';
+        }  
+    } 
 }else{
     $result = $matriculantMapper->readMatriculant($sentData['id'], $sentData['code']);
     if (!isset($result)) $matriculant->setResult($result);                        
