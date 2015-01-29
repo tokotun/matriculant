@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	require_once 'config.php';
 	require_once 'app/functions.php';
 	require_once 'app/autoloader.php';
@@ -9,3 +9,8 @@
 	$pdo = new PDO($dbc, $db_user, $db_password);
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$matriculantMapper = new MatriculantMapper($pdo);
+
+	(isset($_COOKIE['id'])) ? $id = $_COOKIE['id'] : $id = '';
+    (isset($_COOKIE['code'])) ? $code = $_COOKIE['code'] : $code = '';
+
+	$matriculantMapper->isLoggedIn($id, $code);

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'app/boostrap.php';
 
 $curentPage = isset($_GET['page']) ? $_GET['page'] : 1; //если номер страницы не указан, то это первая страница
@@ -22,8 +22,5 @@ $pager = new Pager;
 
 $pager->setPage($curentPage, $countPage, $sort, $order, $userSearch);
 
-$matriculant = new Matriculant;
-$sentData = getLoginData();
-$matriculant->setData($sentData);
 
 include 'templates/main.php';

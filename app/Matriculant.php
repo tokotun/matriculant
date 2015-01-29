@@ -23,20 +23,24 @@ class Matriculant
     public $yearOfBirth = '';
     public $location = '';
 
+    public function hasError()
+    {
+        return $this->errors['error'];
+    }
+
     public function setData($sentData)
     {   
       //получает данные об абитуриентах от формы
-        $this->setId($sentData['id']);
-        $this->setCode($sentData['code']);
-        $this->setName($sentData['name']);
-        $this->setSurname($sentData['surname']);
-        $this->setSex($sentData['sex']);
-        $this->setNumberGroup($sentData['numberGroup']);
-        $this->setEmail($sentData['email']);
-        $this->setScore($sentData['score']);
-        $this->setYearOfBirth($sentData['yearOfBirth']);
-        $this->setLocation($sentData['location']);
-
+        if ($sentData['id'] <> '')          $this->setId($sentData['id']);
+        if ($sentData['code'] <> '')        $this->setCode($sentData['code']);
+        if ($sentData['name'] <> '')        $this->setName($sentData['name']);
+        if ($sentData['surname'] <> '')     $this->setSurname($sentData['surname']);
+        if ($sentData['sex'] <> '')         $this->setSex($sentData['sex']);
+        if ($sentData['numberGroup'] <> '') $this->setNumberGroup($sentData['numberGroup']);
+        if ($sentData['email'] <> '')       $this->setEmail($sentData['email']);
+        if ($sentData['score'] <> '')       $this->setScore($sentData['score']);
+        if ($sentData['yearOfBirth'] <> '') $this->setYearOfBirth($sentData['yearOfBirth']);
+        if ($sentData['location'] <> '')    $this->setLocation($sentData['location']);
     }
 
     public function validateData(){
@@ -125,7 +129,8 @@ class Matriculant
         $this->email = $email;
     }
     protected function validateEmail(){
-        $regexp = '/.+@.+\..+/i';
+        $regexp = '/^[a-z]{1,50}@[a-z]{1,50}.*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/u';
+
         if (!preg_match($regexp, $this->email)) {
             $this->errors['error'] = true;
             $this->errors['email']  = 'Неверный формат email адреса';
@@ -177,27 +182,5 @@ class Matriculant
     {
         $this->errors['error'] = true;
         $this->errors['email']  = 'email адрес уже занят';
-    }
-
-    function setResult($result){
-        foreach ($result as $key => $value){
-            $this->{$key} =            $result[$key];
-        }
-            // $this->id =          $result['id'];
-            // $this->code =        $result['code'];
-            // $this->name =        $result['name'];
-            // $this->surname =     $result['surname'];
-            // $this->sex =         $result['sex'];
-            // $this->numberGroup = $result['numberGroup'];
-            // $this->email =       $result['email'];
-            // $this->score =       $result['score'];
-            // $this->yearOfBirth = $result['yearOfBirth'];
-            // $this->location =    $result['location'];   
-    }
-
-    public function rewriteMatriculant($sentData){
-        foreach ($sentData as $key => $value){
-            if ($sentData[$key] <> '')  $this->{$key} = $sentData[$key];
-        }
     }
 }

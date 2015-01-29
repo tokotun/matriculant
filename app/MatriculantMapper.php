@@ -3,6 +3,8 @@
 class MatriculantMapper
 {
     protected $db;
+    public $recorded = FALSE;
+    public $loggedIn;
 
     public function __construct(PDO $db)
     {
@@ -32,6 +34,7 @@ class MatriculantMapper
         $this->bindField($statment, $matriculant, FALSE, TRUE);
         $statment->execute();
         $matriculant->id = $this->db->lastInsertId();
+        $this->recorded = TRUE;
     }
 
     public function updateMatriculant(Matriculant $matriculant)
@@ -42,6 +45,7 @@ class MatriculantMapper
         $statment = $this->db->prepare($sql);
         $this->bindField($statment, $matriculant, TRUE, TRUE);
         $statment->execute();
+        $this->recorded = TRUE;
     }
 
     public function readMatriculant($id, $code)
@@ -52,7 +56,16 @@ class MatriculantMapper
         $statment->bindValue(':code', $code);
         $statment->execute();
         
-        return $result = $statment->fetch(PDO::FETCH_ASSOC);   
+        $result = $statment->fetch(PDO::FETCH_ASSOC); 
+        $matriculant = new Matriculant;  
+
+        if (isset($result)) 
+        {
+            $matriculant->setData($result);   
+            return $matriculant;
+        } else {
+            return FALSE;
+        }
     }
 
     public function viewMatriculant($curPage, $sort, $order, $userSearch, $resultPerPage, $columns) //выбирает из базы абитуриентов. 
@@ -98,22 +111,8 @@ class MatriculantMapper
         
     }
     
-    public function checkUser(Matriculant $matriculant)
-    {   
-        $sql = "SELECT * FROM matriculant WHERE id=:id and code=:code";
-        $statment = $this->db->prepare($sql);
-        $statment->bindValue(':id', $matriculant->id);
-        $statment->bindValue(':code', $matriculant->code);
-        $statment->execute();
-        $result = $statment->fetch();
-        if ($result) {
-            return TRUE;
-        }else{
-            return FALSE;}
-    }
-
-     public function checkUniquenessEmail($email)
-     {
+    public function checkUniquenessEmail($email)
+    {
         $sql = "SELECT email FROM matriculant WHERE email=:email and id<>:id";
         $statment = $this->db->prepare($sql);
         $statment->bindParam(':id', $this->id);
@@ -127,6 +126,21 @@ class MatriculantMapper
         }else{
             //емайл уже занят
             return FALSE;
+        }
+    }
+
+    function isLoggedIn($id, $code)
+    {           
+        $sql = "SELECT count(*) FROM matriculant WHERE id=:id and code=:code";
+        $statment = $this->db->prepare($sql);
+        $statment->bindValue(':id', $id);
+        $statment->bindValue(':code', $code);
+        $statment->execute();
+        $result = $statment->fetch();
+        if ($result) {
+            $this->loggedIn = TRUE;
+        }else{
+            $this->loggedIn = FALSE;
         }
     }
 }

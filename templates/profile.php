@@ -1,29 +1,34 @@
-<?php include('templates/header.php'); ?>
-<div class="navbar"><div class="navbar-inner"><div class="container">
-<ul class="nav">
-    <li><a href="index.php">На главную</a></li>
-    <li class="active"><?php if ($matriculantMapper->checkUser($matriculant)) :?>
-        <a href="login.php">Редактировать данные</a>
-    <?php else: ?>
-        <a href="login.php">Зарегистрироваться</a>
-    <?php endif; ?>  
-    </li>
-</ul>
+﻿<?php include('templates/header.php');?>
 
-</div></div></div>
+                <li><a href="index.php">На главную</a></li>
+                <li class="active"><a href="login.php">
+                    <?php if ($matriculantMapper->loggedIn):?>Редактировать профиль
+                    <?php else :?>Зарегистрироватся<?php endif;?>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="container">
 
 <div class="page-header">
-<h1><?php if (isset($_COOKIE['id'])):?>Редактирование данных об абитуриенте
-    <?php else                      :?>Регистрация абитуриента
-    <?php endif;?>
+<h1><?php if ($matriculantMapper->loggedIn):?>Редактировать профиль
+    <?php else :?>Зарегистрироватся<?php endif;?>
 </h1>
 </div>
+    <?php if ($matriculantMapper->recorded) : ?>
+        <?php if ($matriculantMapper->loggedIn):?>
+            <div class="alert alert-success">Изменения сохранены</div>
+        <?php else :?>
+            <div class="alert alert-success">Вы успешно зарегистрировались и добавлены в таблицу</div>
+        <?php endif;?>
+    <?php endif; ?>
+
 
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <fieldset>
-        <p class="text-error"><!-- ошибка выводится если форма была отправлена -->
+        <p class="text-error">
                 <?= $errorToken ?>
         </p>
 

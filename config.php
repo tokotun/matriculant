@@ -12,7 +12,7 @@
     		//'sex' 			=> 'SEX',
     		'numberGroup'	=> 'Number Group',
     		//'email'			=> 'E-Mail',
-    		'score'			=> 'Score',
+    		'score'			=> 'Score'
     		//'yearOfBirth'	=> 'Year Of Birth', 
     		//'location'		=> 'The Place Of Residence',
     );
