@@ -25,24 +25,27 @@ if (isset($_POST['submit'])){
     if (!$matriculantMapper->checkUniquenessEmail($matriculant->email)){
         $matriculant->setNotUniqueEmailError(); //не уникальный емайл, функция отмечает эту ошибку
     }
-
     if (!validateToken()) { 
-        $matriculant->errors['error'] = TRUE;
+        $matriculant->errors['token'] = TRUE;
         $errorToken = 'Произошла ошибка. Пожалуйста, попробуйте отправить форму еще раз.';
     }
 
-    if  ($matriculant->errors['error'] == false){   
+    if  ($matriculant->errors['error'] == FALSE){   
         if (($matriculant->id == '') && ($matriculant->code == '')){
             //Cохраняем отправленные данные
             $matriculant->generateCode();
             $matriculantMapper->saveMatriculant($matriculant);
             setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
-            setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет       
+            setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет 
+            //при сохранении не совпадает токен и ID. Но выводить ошибку не требуется.
+            $errorToken = '';
         } else { 
             //Обновляем отправленные данные
             $matriculantMapper->updateMatriculant($matriculant);
         }
     }
 }
+
+
 
 include 'templates/profile.php';

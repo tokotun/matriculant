@@ -3,7 +3,8 @@
 class Matriculant
 {
     public $errors = array(
-        'error' => false,
+        'error' => FALSE,
+        'token' => FALSE,
         'name' => '',
         'surname' => '',
         'sex' => '',
@@ -144,9 +145,8 @@ class Matriculant
         $this->score = $score;   
     }
     protected function validateScore(){
-
-        if (($this->score < 0) && ($this->score > 300) or ($this->score == '')) {
-            
+        
+        if (($this->score < 0) or ($this->score > 300) or ($this->score == '')) { 
             $this->errors['error'] = true;
             $this->errors['score'] = 'Баллов не должно быть меньше 0 и больше 300';
         }
