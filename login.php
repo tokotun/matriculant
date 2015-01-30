@@ -45,7 +45,5 @@ if (isset($_POST['submit'])){
         }
     }
 }
-
-
-
-include 'templates/profile.php';
+header("Location: loginForm.php");
+die( );

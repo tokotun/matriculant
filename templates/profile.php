@@ -1,4 +1,4 @@
-﻿<?php include('templates/header.php');?>
+<?php include('templates/header.php');?>
 
                 <li><a href="index.php">На главную</a></li>
                 <li class="active"><a href="login.php">
