@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'app/boostrap.php';
 
 $curentPage = isset($_GET['page']) ? $_GET['page'] : 1; //если номер страницы не указан, то это первая страница
@@ -16,7 +16,9 @@ $total  = $matriculantMapper->totalMatriculant($userSearch); //всего зап
 
 
 $countPage = ceil($total/$resultPerPage); //вот столько нам понадобится страниц для всех абитуриентов    
-if ($countPage == 0) $countPage =1; 
+if ($countPage == 0) {
+	$countPage =1;
+}
 
 $pager = new Pager;
 

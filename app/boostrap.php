@@ -1,16 +1,17 @@
-﻿<?php
-	require_once 'config.php';
-	require_once 'app/functions.php';
-	require_once 'app/autoloader.php';
-	spl_autoload_register('autoloader');
+<?php
+    require 'config.php';
+    require_once 'app/functions.php';
+    require_once 'app/autoloader.php';
+    spl_autoload_register('autoloader');
 
-	$errorToken = '';
-	$dbc = 'mysql:host=' . $db_host . ';dbname=' . $db_name;
-	$pdo = new PDO($dbc, $db_user, $db_password);
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$matriculantMapper = new MatriculantMapper($pdo);
+    $errorToken = '';
+    $dbc = 'mysql:host=' . $db_host . ';dbname=' . $db_name;
+    $pdo = new PDO($dbc, $db_user, $db_password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $matriculantMapper = new MatriculantMapper($pdo);
 
-	(isset($_COOKIE['id'])) ? $id = $_COOKIE['id'] : $id = '';
-    (isset($_COOKIE['code'])) ? $code = $_COOKIE['code'] : $code = '';
+    $id   = (isset($_COOKIE['id']))   ? $_COOKIE['id']   : '';
+    $code = (isset($_COOKIE['code'])) ? $_COOKIE['code'] : '';
 
-	$matriculantMapper->isLoggedIn($id, $code);
+    $template = new Template($pdo);
+    $template->isLoggedIn($id, $code);

@@ -16,7 +16,6 @@ Class Pager
         $this->userSearch   = $userSearch;
     }
 
-
 //формирует линк с данными для сортировки
     function getLinks()
     {
@@ -33,6 +32,7 @@ Class Pager
         
         return $links;
     }
+
     function getPreviousPage()
     {
         if ($this->curentPage==1) return ''; //если страница первая, то предыдущей ссылки нет. Выходим из функции
@@ -81,4 +81,5 @@ Class Pager
             }
         }        
     }
+
 }

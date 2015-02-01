@@ -1,10 +1,9 @@
-﻿<?php
+<?php
 
 class Matriculant
 {
     public $errors = array(
-        'error' => FALSE,
-        'token' => FALSE,
+        'error' => false,
         'name' => '',
         'surname' => '',
         'sex' => '',
@@ -130,7 +129,7 @@ class Matriculant
         $this->email = $email;
     }
     protected function validateEmail(){
-        $regexp = '/^[a-z]{1,50}@[a-z]{1,50}.*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/u';
+        $regexp = "/^[^ ]+@[^ ]+\.[^ ]+$/i";
 
         if (!preg_match($regexp, $this->email)) {
             $this->errors['error'] = true;
@@ -159,7 +158,8 @@ class Matriculant
     }
     protected function validateYearOfBirth(){
         $regexp = '/^[0-9]{4}?$/u'; //формат даты 19хх
-        if (!preg_match($regexp, $this->yearOfBirth)) {
+        if ((!preg_match($regexp, $this->yearOfBirth)) 
+            or ($this->yearOfBirth < 1900) or ($this->yearOfBirth > 2050)) {
             $this->errors['error'] = true;
             $this->errors['yearOfBirth'] = 'Формат даты для ввода должен быть - хххх';
         }

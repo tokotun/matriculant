@@ -8,9 +8,9 @@ function h($string)
 function getLoginData(){
 	$sentData = array();
     //данные из кук
-    (isset($_COOKIE['id'])) ? $sentData['id'] = $_COOKIE['id'] : $sentData['id'] = '';
+    $sentData['id'] =   (isset($_COOKIE['id']))   ? $_COOKIE['id']   : '';
 
-    (isset($_COOKIE['code'])) ? $sentData['code'] = $_COOKIE['code'] : $sentData['code'] = '';
+    $sentData['code'] = (isset($_COOKIE['code'])) ? $_COOKIE['code'] : '';
     
     //данные из пост
     $nameField = array('name','surname','sex','numberGroup','email','score','yearOfBirth','location');
@@ -18,7 +18,7 @@ function getLoginData(){
 
     foreach ($nameField as $value)
     {
-        (isset($_POST[$value])) ? $sentData[$value] = trim($_POST[$value]) : $sentData[$value] = '';
+        $sentData[$value] = (isset($_POST[$value])) ? trim($_POST[$value]) : '';
     }
     return $sentData;
 
@@ -31,8 +31,9 @@ function validateToken(){
         $code = $_COOKIE['code'];
     	$token = $_POST['token'];
 
-    	if ($code == $token)  return TRUE;
+    	if ($code == $token)  {
+            return true;
+        }
     }
-    return FALSE;
+    return false;
 }
-
