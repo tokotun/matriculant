@@ -18,23 +18,27 @@ class MatriculantMapper
         if ( $needCode ) {
             $statment->bindValue(':code', $matriculant->getCode());
         }
-        $statment->bindValue(':name',       $matriculant->getName());
-        $statment->bindValue(':surname',    $matriculant->getSurname());
-        $statment->bindValue(':sex',        $matriculant->getSex());
+        $statment->bindValue(':name',        $matriculant->getName());
+        $statment->bindValue(':surname',     $matriculant->getSurname());
+        $statment->bindValue(':sex',         $matriculant->getSex());
         $statment->bindValue(':numberGroup', $matriculant->getNumberGroup());
-        $statment->bindValue(':email',      $matriculant->getEmail());
-        $statment->bindValue(':score',      $matriculant->getScore());
+        $statment->bindValue(':email',       $matriculant->getEmail());
+        $statment->bindValue(':score',       $matriculant->getScore());
         $statment->bindValue(':yearOfBirth', $matriculant->getYearOfBirth());
-        $statment->bindValue(':location',   $matriculant->getLocation());
+        $statment->bindValue(':location',    $matriculant->getLocation());
     }
 
 
     public function saveMatriculant(Matriculant $matriculant)
     {
-        $sql = "INSERT INTO matriculant (code, name, surname, sex, numberGroup, email, score, yearOfBirth, location)
-            VALUES (:code, :name, :surname, :sex, :numberGroup, :email, :score, :yearOfBirth, :location)";
+        $sql = "INSERT INTO matriculant (code,  name,  surname,   sex,  numberGroup,  email,  score,  yearOfBirth,  location)
+                                 VALUES (:code, :name, :surname, :sex, :numberGroup, :email, :score, :yearOfBirth, :location)";
         $statment = $this->db->prepare($sql);
+        print_r($matriculant);
         $this->bindField($statment, $matriculant, false, true);
+        echo '<br><br><br>';
+        print_r($statment);
+        echo '<br><br><br>';
         $statment->execute();
         $id = $this->db->lastInsertId();
         $matriculant->setId($id);
@@ -113,21 +117,23 @@ class MatriculantMapper
         return $total;        
     }
     
-    public function checkUniquenessEmail($email)
+    public function checkUniquenessEmail($matriculant)
     {
-        $sql = "SELECT email FROM matriculant WHERE email=:email and id<>:id";
+        $id    = $matriculant->getId();
+        $email = $matriculant->getEmail();
+
+
+        $sql = "SELECT count(email) FROM matriculant WHERE email=:email and id<>:id";
         $statment = $this->db->prepare($sql);
-        $statment->bindParam(':id', $this->id);
+        $statment->bindParam(':id', $id);
         $statment->bindParam(':email', $email);
         $statment->execute();
 
-        $result = $statment->fetch();
-        if (empty($result)) {
-            //емайл уникален
-            return true;
-        }else{
-            //емайл уже занят
-            return false;
+        $total = $statment->fetchColumn();
+        if ($total == 0) {   
+            return true; //емайл уникален
+        }else{     
+            return false; //емайл уже занят
         }
     }
 }

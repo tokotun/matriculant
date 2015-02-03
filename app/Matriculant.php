@@ -133,7 +133,8 @@ class Matriculant
         if ($sentData['location'] <> '')    $this->setLocation($sentData['location']);
     }
 
-    public function validateData(){
+    public function validateData()
+    {
         $this->validateName();
         $this->validateSurname();
         $this->validateSex();
@@ -145,14 +146,17 @@ class Matriculant
 
     }
 
-    public function setId($id){ 
+    public function setId($id)
+    { 
         $this->id = $id;
     }
 
-    protected function setCode($code){ 
+    protected function setCode($code)
+    { 
         $this->code = $code;
     }
-    public function generateCode(){ 
+    public function generateCode()
+    { 
         $this->code ='';
         $string = "abcdefghijklmnopqrstuvwxyz1234567890";
         $length = mb_strlen($string);
@@ -164,11 +168,13 @@ class Matriculant
     }
 
     //далее идут всякие функции проверяющие адекватность введённых данных
-    protected function setName($name){ 
+    protected function setName($name)
+    { 
         $name = trim($name);
         $this->name = $name;
     }
-    protected function validateName(){ 
+    protected function validateName()
+    { 
         $regexp = '/^[А-ЯЁ][а-яё]{1,80}$/u';
         if (!preg_match($regexp, $this->name)) {
             $this->errors['error'] = true;
@@ -177,11 +183,13 @@ class Matriculant
         if ($this->name =='') $this->errors['name']  = 'Необходимо заполнить это поле';
     }
 
-    protected function setSurname($surname){
+    protected function setSurname($surname)
+    {
         $surname = trim($surname);
         $this->surname = $surname;   
     }
-    protected function validateSurname(){
+    protected function validateSurname()
+    {
         $regexp = '/^[А-ЯЁ][а-яё]{1,50}(-[А-ЯЁ][а-яё]{1,50})?$/u'; //проверка на двойную фамилию тоже
         if (!preg_match($regexp, $this->surname)) 
         {
@@ -191,34 +199,40 @@ class Matriculant
         if ($this->surname =='') $this->errors['surname']  = 'Необходимо заполнить это поле';
     }
 
-    protected function setSex($sex){
+    protected function setSex($sex)
+    {
         $this->sex = $sex;  
     }
-    protected function validateSex(){
+    protected function validateSex()
+    {
         if ($this->sex == '') {
             $this->errors['error'] = true;
             $this->errors['sex']  = 'Не отмечен пол студента';
         }
     }
 
-    protected function setNumberGroup($numberGroup){
+    protected function setNumberGroup($numberGroup)
+    {
         $numberGroup = trim($numberGroup);
         $this->numberGroup = $numberGroup;  
     }
-    protected function validateNumberGroup(){
+    protected function validateNumberGroup()
+    {
         $regexp = '/^[0-9А-ЯЁ-]{4,5}$/u';
-        if (!preg_match($regexp, $this->numberGroup)) {
+        if (!preg_match($regexp, $this->numberGroup)){
             $this->errors['error'] = true;
             $this->errors['numberGroup']  = 'Неверно введен номер группы';
         }
         if ($this->numberGroup =='') $this->errors['numberGroup']  = 'Необходимо заполнить это поле';
     }
 
-    protected function setEmail($email){   
+    protected function setEmail($email)
+    {   
         $email = trim($email);
         $this->email = $email;
     }
-    protected function validateEmail(){
+    protected function validateEmail()
+    {
         $regexp = "/^[^ ]+@[^ ]+\.[^ ]+$/i";
 
         if (!preg_match($regexp, $this->email)) {
@@ -233,7 +247,8 @@ class Matriculant
         
         $this->score = $score;   
     }
-    protected function validateScore(){
+    protected function validateScore()
+    {
         
         if (($this->score < 0) or ($this->score > 300) or ($this->score == '')) { 
             $this->errors['error'] = true;
@@ -242,11 +257,13 @@ class Matriculant
         if ($this->score =='') $this->errors['score']  = 'Необходимо заполнить это поле';
     }
 
-    protected function setYearOfBirth($yearOfBirth){   
+    protected function setYearOfBirth($yearOfBirth)
+    {   
         $yearOfBirth = trim($yearOfBirth);
         $this->yearOfBirth = $yearOfBirth;
     }
-    protected function validateYearOfBirth(){
+    protected function validateYearOfBirth()
+    {
         $regexp = '/^[0-9]{4}?$/u'; //формат даты 19хх
         if ((!preg_match($regexp, $this->yearOfBirth)) 
             or ($this->yearOfBirth < 1900) or ($this->yearOfBirth > 2050)) {
@@ -261,7 +278,8 @@ class Matriculant
         $this->location = $location;
         
     }
-    protected function validateLocation(){
+    protected function validateLocation()
+    {
        if ($this->location == '') {    
             $this->errors['error'] = true;
             $this->errors['location']  = 'Не отмечено место проживания студента';
