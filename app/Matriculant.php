@@ -2,7 +2,7 @@
 
 class Matriculant
 {
-    public $errors = array(
+    protected $errors = array(
         'error' => false,
         'name' => '',
         'surname' => '',
@@ -12,20 +12,110 @@ class Matriculant
         'score' => '',
         'yearOfBirth' => '',
         'location' => '');
-    public $id = '';
-    public $code = '';
-    public $name = '';
-    public $surname = '';
-    public $sex = '';
-    public $numberGroup = '';
-    public $email = '';
-    public $score = '';
-    public $yearOfBirth = '';
-    public $location = '';
+    protected $id = '';
+    protected $code = '';
+    protected $name = '';
+    protected $surname = '';
+    protected $sex = '';
+    protected $numberGroup = '';
+    protected $email = '';
+    protected $score = '';
+    protected $yearOfBirth = '';
+    protected $location = '';
 
-    public function hasError()
+    public function getError()
     {
         return $this->errors['error'];
+    }
+
+    public function getErrorName()
+    {
+        return $this->errors['name'];
+    }
+
+    public function getErrorSurname()
+    {
+        return $this->errors['surname'];
+    }
+
+    public function getErrorSex()
+    {
+        return $this->errors['sex'];
+    }
+    
+    public function getErrorNumberGroup()
+    {
+        return $this->errors['numberGroup'];
+    }
+
+    public function getErrorEmail()
+    {
+        return $this->errors['email'];
+    }
+
+    public function getErrorScore()
+    {
+        return $this->errors['score'];
+    }
+ 
+    public function getErrorYearOfBirth()
+    {
+        return $this->errors['yearOfBirth'];
+    }
+
+    public function getErrorLocation()
+    {
+        return $this->errors['location'];
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    public function getSex()
+    {
+        return $this->sex;
+    }
+    
+    public function getNumberGroup()
+    {
+        return $this->numberGroup;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function getScore()
+    {
+        return $this->score;
+    }
+ 
+    public function getYearOfBirth()
+    {
+        return $this->yearOfBirth;
+    }
+
+    public function getLocation()
+    {
+        return $this->location;
     }
 
     public function setData($sentData)
@@ -55,7 +145,7 @@ class Matriculant
 
     }
 
-    protected function setId($id){ 
+    public function setId($id){ 
         $this->id = $id;
     }
 

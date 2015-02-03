@@ -19,7 +19,7 @@
                         class="active" 
                     <?php endif;?>>
                     <a href="login.php">
-                        <?php if ($template->loggedIn):?>
+                        <?php if ($template->checkloggedIn()):?>
                             Редактировать профиль
                         <?php else :?>
                             Зарегистрироватся

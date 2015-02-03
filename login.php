@@ -22,17 +22,17 @@ if (isset($_POST['submit'])){
     $matriculant->setData($sentData);
     $matriculant->validateData();   
 
-    if (!$matriculantMapper->checkUniquenessEmail($matriculant->email)) {
+    if (!$matriculantMapper->checkUniquenessEmail($matriculant->getEmail())) {
         $matriculant->setNotUniqueEmailError(); //не уникальный емайл, функция отмечает эту ошибку
     }
 
-    if  ($matriculant->errors['error'] == false) {   
-        if (($matriculant->id == '') && ($matriculant->code == '')) {
+    if  (!$matriculant->getError()) {   
+        if (($matriculant->getId() == '') && ($matriculant->getCode() == '')) {
             //Cохраняем отправленные данные
             $matriculant->generateCode();
             $matriculantMapper->saveMatriculant($matriculant);
-            setcookie('id', $matriculant->id, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
-            setcookie('code', $matriculant->code, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет 
+            setcookie('id', $matriculant->getId, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
+            setcookie('code', $matriculant->getCode, strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет 
             //при сохранении не совпадает токен и ID. Но выводить ошибку не требуется.
             header("Location: login.php?action=saved");
             die();

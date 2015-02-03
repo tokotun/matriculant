@@ -34,10 +34,10 @@
         <?php endforeach  ?>
     </table>
 
-    <?php if ($pager->countPage > 1): ?>
+    <?php if ($pager->getCountPage() > 1): ?>
         <div class="pagination">
             <ul>
-            <?php if ($pager->curentPage == 1): ?>
+            <?php if ($pager->getCurentPage() == 1): ?>
                 <li class="disabled"><span>Prev</span></li>
             <?php else: ?>
                 <li><a href="<?= $pager->getPreviousPage() ?>">Prev</a></li>
@@ -45,14 +45,14 @@
             
         <!-- формируем циферки со ссылками на странички           -->
             <?php foreach ($pager->getLinks() as $text => $link): ?>
-                <?php if ($pager->curentPage == $text): ?>
+                <?php if ($pager->getCurentPage() == $text): ?>
                     <li class="active"><span><?= h($text); ?></span></li>
                 <?php else: ?>
                     <li><a href="<?= h($link); ?>"><?= h($text); ?></a></li>
                 <?php endif; ?>
             <?php endforeach ?>
 
-            <?php if ($pager->curentPage == $pager->countPage): ?>
+            <?php if ($pager->getCurentPage() == $pager->getCountPage()): ?>
                 <li class="disabled"><span>Next</span></li>
             <?php else: ?>
                 <li><a href="<?= $pager->getNextPage() ?>">Next</a></li>

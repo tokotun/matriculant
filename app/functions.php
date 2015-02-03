@@ -26,7 +26,6 @@ function getLoginData(){
 
 function validateToken(){
 
-   
 	if ((isset($_COOKIE['code'])) and (isset($_POST['token']))){
         $code = $_COOKIE['code'];
     	$token = $_POST['token'];

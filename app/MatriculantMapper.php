@@ -13,19 +13,19 @@ class MatriculantMapper
     protected function bindField($statment, Matriculant $matriculant, $needId = false, $needCode = false)
     {
         if ( $needId ) {
-            $statment->bindValue(':id', $matriculant->id);
+            $statment->bindValue(':id', $matriculant->getId());
         }
         if ( $needCode ) {
-            $statment->bindValue(':code', $matriculant->code);
+            $statment->bindValue(':code', $matriculant->getCode());
         }
-        $statment->bindValue(':name',       $matriculant->name);
-        $statment->bindValue(':surname',    $matriculant->surname);
-        $statment->bindValue(':sex',        $matriculant->sex);
-        $statment->bindValue(':numberGroup', $matriculant->numberGroup);
-        $statment->bindValue(':email',      $matriculant->email);
-        $statment->bindValue(':score',      $matriculant->score);
-        $statment->bindValue(':yearOfBirth', $matriculant->yearOfBirth);
-        $statment->bindValue(':location',   $matriculant->location);
+        $statment->bindValue(':name',       $matriculant->getName());
+        $statment->bindValue(':surname',    $matriculant->getSurname());
+        $statment->bindValue(':sex',        $matriculant->getSex());
+        $statment->bindValue(':numberGroup', $matriculant->getNumberGroup());
+        $statment->bindValue(':email',      $matriculant->getEmail());
+        $statment->bindValue(':score',      $matriculant->getScore());
+        $statment->bindValue(':yearOfBirth', $matriculant->getYearOfBirth());
+        $statment->bindValue(':location',   $matriculant->getLocation());
     }
 
 
@@ -36,7 +36,8 @@ class MatriculantMapper
         $statment = $this->db->prepare($sql);
         $this->bindField($statment, $matriculant, false, true);
         $statment->execute();
-        $matriculant->id = $this->db->lastInsertId();
+        $id = $this->db->lastInsertId();
+        $matriculant->setId($id);
     }
 
     public function updateMatriculant(Matriculant $matriculant)

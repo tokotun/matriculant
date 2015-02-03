@@ -2,14 +2,14 @@
 //класс, который хранит переменные для шаблона
 Class Template
 {
-	public $loggedIn; //произведен ли вход
+	protected $loggedIn; //произведен ли вход
 
 	public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-	function isLoggedIn($id, $code)
+	public function isLoggedIn($id, $code)
 	{           
 	    $sql = "SELECT count(*) FROM matriculant WHERE id=:id and code=:code";
 	    $statment = $this->db->prepare($sql);
@@ -22,6 +22,11 @@ Class Template
 	    }else{
 	        $this->loggedIn = false;
 	    }
+	}
+
+	public function checkloggedIn()
+	{
+		return $this->loggedIn;
 	}
 
 }

@@ -1,11 +1,21 @@
 <?php 
 Class Pager
 {
-    public $curentPage;
-    public $countPage;
-    public $sort;
-    public $order;
-    public $userSearch;
+    protected $curentPage;
+    protected $countPage;
+    protected $sort;
+    protected $order;
+    protected $userSearch;
+
+    function getCurentPage()
+    {
+        return $this->curentPage;
+    }
+
+    function getCountPage()
+    {
+        return $this->countPage;
+    }
 
     function setPage($curentPage, $countPage, $sort, $order, $userSearch)
     {
