@@ -10,16 +10,16 @@
     <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-                <li <?php if ($_SERVER['PHP_SELF'] == '/matriculant/index.php'):?>
+                <li <?php if ($section == 'index'):?>
                         class="active" 
                     <?php endif;?>>
                     <a href="index.php">На главную</a>
                 </li>
-                <li <?php if ($_SERVER['PHP_SELF'] == '/matriculant/login.php'):?>
+                <li <?php if ($section == 'login'):?>
                         class="active" 
                     <?php endif;?>>
                     <a href="login.php">
-                        <?php if ($template->checkloggedIn()):?>
+                        <?php if ($loggedIn):?>
                             Редактировать профиль
                         <?php else :?>
                             Зарегистрироватся
@@ -27,7 +27,7 @@
                     </a>
                 </li>
             </ul>
-            <?php if ($_SERVER['PHP_SELF'] == '/matriculant/index.php'):?>
+            <?php if ($section == 'index'):?>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" class="form-search navbar-form pull-right">
                     <input type="text" name="userSearch" class="input-medium search-query">
                     <button type="submit" class="btn">Search</button>

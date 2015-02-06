@@ -13,5 +13,15 @@
     $id   = (isset($_COOKIE['id']))   ? $_COOKIE['id']   : '';
     $code = (isset($_COOKIE['code'])) ? $_COOKIE['code'] : '';
 
-    $template = new Template($pdo);
-    $template->isLoggedIn($id, $code);
+    //проверка на наличие в базе абитуриента с таким ID
+    $loggedIn = $matriculantMapper->isLoggedIn($id, $code);
+
+    //определение раздела
+    $section = '';
+    if ($_SERVER['PHP_SELF'] == '/matriculant/index.php'){
+        $section = 'index';
+    }
+    if ($_SERVER['PHP_SELF'] == '/matriculant/login.php'){
+        $section = 'login';
+    }
+

@@ -1,9 +1,10 @@
 <?php
 require_once 'app/boostrap.php';
 
-    /*в getLoginData() Данные из $_POST и $_COOKIE записываются в массив$sentData 
-      для последующей передачи в класс Matriculant */
-
+/**
+ * В getLoginData() Данные из $_POST и $_COOKIE записываются в массив$sentData 
+ * для последующей передачи в класс Matriculant 
+ */
 $sentData = getLoginData();    
 //если были получены ID и код, то подготавливаем обьект к обновлению
 if (( $sentData['id'] <> '') and ($sentData['code'] <> '')) {   
@@ -31,8 +32,8 @@ if (isset($_POST['submit'])){
             //Cохраняем отправленные данные
             $matriculant->generateCode();
             $matriculantMapper->saveMatriculant($matriculant);
-            setcookie('id', $matriculant->getId(), strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет
-            setcookie('code', $matriculant->getCode(), strtotime('+10 year'), null, null, false, true); //срок действия чуть меньше 10 лет 
+            setcookie('id', $matriculant->getId(), strtotime('+10 year'), '/', null, false, true); //срок действия чуть меньше 10 лет
+            setcookie('code', $matriculant->getCode(), strtotime('+10 year'), '/', null, false, true); //срок действия чуть меньше 10 лет 
             //при сохранении не совпадает токен и ID. Но выводить ошибку не требуется.
             header("Location: login.php?action=saved");
             die();
@@ -46,4 +47,16 @@ if (isset($_POST['submit'])){
         }
     }
 }
+/* $action - это действие, которое произошло (save/update)
+*/
+$action = '';
+if (isset($_GET['action'])){
+    if ($_GET['action'] == 'update'){
+        $action = 'Изменения сохранены';
+    }
+    if ($_GET['action'] == 'save'){
+        $action = 'Вы успешно зарегистрировались и добавлены в таблицу';
+    }
+}
+
 include 'templates/profile.php'; 

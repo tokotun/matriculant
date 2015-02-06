@@ -10,7 +10,8 @@ class MatriculantMapper
         $this->db = $db;
     }
 
-    protected function bindField($statment, Matriculant $matriculant, $needId = false, $needCode = false)
+
+    protected function bindField( PDOStatement  $statment, Matriculant $matriculant, $needId = false, $needCode = false)
     {
         if ( $needId ) {
             $statment->bindValue(':id', $matriculant->getId());
@@ -34,11 +35,7 @@ class MatriculantMapper
         $sql = "INSERT INTO matriculant (code,  name,  surname,   sex,  numberGroup,  email,  score,  yearOfBirth,  location)
                                  VALUES (:code, :name, :surname, :sex, :numberGroup, :email, :score, :yearOfBirth, :location)";
         $statment = $this->db->prepare($sql);
-        print_r($matriculant);
         $this->bindField($statment, $matriculant, false, true);
-        echo '<br><br><br>';
-        print_r($statment);
-        echo '<br><br><br>';
         $statment->execute();
         $id = $this->db->lastInsertId();
         $matriculant->setId($id);
@@ -73,17 +70,21 @@ class MatriculantMapper
         }
     }
 
-    public function viewMatriculant($curPage, $sort, $order, $userSearch, $resultPerPage, $columns) 
-    //выбирает из базы абитуриентов. 
-    //пременные- номер страницы, способ сортировки, кол-во записей на страницу
+   /**
+    * viewMatriculant() выбирает из базы абитуриентов. 
+    * @param int $curPage, string $sort, string $order, string $userSearch, int $resultPerPage, array $columns
+    */
+    public function viewMatriculant($curPage, $sort, $order, $userSearch, $resultPerPage)  
     {
         $skipResult = ($curPage - 1) * $resultPerPage;
 
         $allowed = array();
-        foreach ($columns as $keyColumn => $valueColumn) {$allowed[] = $keyColumn;}        //передача названий колонок
+
+        //названий колонок
+        $allowed = array('name', 'surname', 'numberGroup', 'score');
 
         $key     = array_search($sort, $allowed); // ищем среди них переданный параметр
-        $orderBy = $allowed[$key]; //выбираем найденный (или, за счёт приведения типов - первый) элемент. 
+        $orderBy = $allowed[$key];    //выбираем найденный (или, за счёт приведения типов - первый) элемент. 
         $order   = ($order == 'DESC') ? 'DESC' : 'ASC'; // определяем направление сортировки
                                                         //запрос теперь 100% безопасен
         $search = "%$userSearch%";
@@ -134,6 +135,21 @@ class MatriculantMapper
             return true; //емайл уникален
         }else{     
             return false; //емайл уже занят
+        }
+    }
+
+    public function isLoggedIn($id, $code)
+    {           
+        $sql = "SELECT count(*) FROM matriculant WHERE id=:id and code=:code";
+        $statment = $this->db->prepare($sql);
+        $statment->bindValue(':id', $id);
+        $statment->bindValue(':code', $code);
+        $statment->execute();
+        $result = $statment->fetchColumn();
+        if ($result > 0) {
+            return true;
+        }else{
+            return false;
         }
     }
 }

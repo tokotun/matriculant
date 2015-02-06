@@ -10,7 +10,7 @@ $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';  // переменна
 $userSearch = isset($_GET['userSearch']) ? trim($_GET['userSearch']) : ''; // и слова для поиска
 
 
-$listMatriculant = $matriculantMapper->viewMatriculant($curentPage, $sort, $order, $userSearch, $resultPerPage, $columns); //берёт список абитуриентов из базы данных
+$listMatriculant = $matriculantMapper->viewMatriculant($curentPage, $sort, $order, $userSearch, $resultPerPage); //берёт список абитуриентов из базы данных
 
 $total  = $matriculantMapper->totalMatriculant($userSearch); //всего записей в таблице
 

@@ -118,9 +118,13 @@ class Matriculant
         return $this->location;
     }
 
+
+   /*
+    *получает данные об абитуриентах от формы
+    */
     public function setData($sentData)
     {   
-      //получает данные об абитуриентах от формы
+      
         if ($sentData['id'] <> '')          $this->setId($sentData['id']);
         if ($sentData['code'] <> '')        $this->setCode($sentData['code']);
         if ($sentData['name'] <> '')        $this->setName($sentData['name']);
@@ -167,7 +171,6 @@ class Matriculant
          }
     }
 
-    //далее идут всякие функции проверяющие адекватность введённых данных
     protected function setName($name)
     { 
         $name = trim($name);

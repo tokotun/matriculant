@@ -2,17 +2,16 @@
 
 <div class="container">
     <div class="page-header">
-        <h1><?php if ($template->checkloggedIn()):?>Редактировать профиль
+        <h1><?php if ($loggedIn):?>Редактировать профиль
             <?php else :?>Зарегистрироватся<?php endif;?>
         </h1>
     </div>
-    <?php if (isset($_GET['action'])):?>
-        <?php if     ($_GET['action'] == 'update'):?>
-            <div class="alert alert-success">Изменения сохранены</div>
-        <?php elseif ($_GET['action'] == 'save') :?>
-            <div class="alert alert-success">Вы успешно зарегистрировались и добавлены в таблицу</div>
-        <?php endif;?>
+
+    <?php if ($action <> '') :?>
+        <div class="alert alert-success"><?= $action ?></div>
     <?php endif;?>
+
+
 
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <fieldset>
