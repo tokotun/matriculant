@@ -5,7 +5,9 @@ require_once 'app/boostrap.php';
  * В getLoginData() Данные из $_POST и $_COOKIE записываются в массив$sentData 
  * для последующей передачи в класс Matriculant 
  */
+
 $sentData = getLoginData();    
+
 //если были получены ID и код, то подготавливаем обьект к обновлению
 if (( $sentData['id'] <> '') and ($sentData['code'] <> '')) {   
     //считываем данные об абитуринте из базы
@@ -54,7 +56,7 @@ if (isset($_GET['action'])){
     if ($_GET['action'] == 'update'){
         $action = 'Изменения сохранены';
     }
-    if ($_GET['action'] == 'save'){
+    if ($_GET['action'] == 'saved'){
         $action = 'Вы успешно зарегистрировались и добавлены в таблицу';
     }
 }

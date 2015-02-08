@@ -1,6 +1,7 @@
 <?php
 require_once 'app/boostrap.php';
 
+
 $curentPage = isset($_GET['page']) ? $_GET['page'] : 1; //если номер страницы не указан, то это первая страница
 
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'score';// тут  принимается переменная колонки для сортировки
@@ -8,7 +9,6 @@ $sort = isset($_GET['sort']) ? $_GET['sort'] : 'score';// тут  принима
 $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';  // переменная с направлением сортировки
 
 $userSearch = isset($_GET['userSearch']) ? trim($_GET['userSearch']) : ''; // и слова для поиска
-
 
 $listMatriculant = $matriculantMapper->viewMatriculant($curentPage, $sort, $order, $userSearch, $resultPerPage); //берёт список абитуриентов из базы данных
 

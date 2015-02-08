@@ -33,11 +33,12 @@ Class Pager
         if ($this->countPage==1) return $links; //если страница 1, то ссылки не нужны. Выходим из функции
         for ($i = 1; $i <= $this->countPage; $i++) {
          
-            $links[$i] = $_SERVER['PHP_SELF'] .
-                '?sort=' . $this->sort .
-                '&order=' . $this->order .
-                '&userSearch=' . $this->userSearch .
-                '&page=' . $i;
+            $data = array(  'sort'  =>$this->sort,
+                'order' =>$this->order,
+                'userSearch'=>$this->userSearch,
+                'page'  =>$i );
+            
+            $links[$i] = $_SERVER['PHP_SELF'] . '?' . http_build_query($data);
         }
         
         return $links;
@@ -46,11 +47,13 @@ Class Pager
     function getPreviousPage()
     {
         if ($this->curentPage==1) return ''; //если страница первая, то предыдущей ссылки нет. Выходим из функции
-        $link = $_SERVER['PHP_SELF'] .
-                '?sort=' . $this->sort .
-                '&order=' . $this->order .
-                '&userSearch=' . $this->userSearch .
-                '&page=' . ($this->curentPage-1);
+        
+        $data = array(  'sort'  =>$this->sort,
+                'order' =>$this->order,
+                'userSearch'=>$this->userSearch,
+                'page'  =>($this->curentPage-1) );
+            
+            $link = $_SERVER['PHP_SELF'] . '?' . http_build_query($data);
         return $link;
     }
 
@@ -58,25 +61,27 @@ Class Pager
     {   
 
         if ($this->curentPage==$this->countPage) return ''; //если страница последняя, то следующей ссылки нет. Выходим из функции
-        
-        $link = $_SERVER['PHP_SELF'] .
-                '?sort=' . $this->sort .
-                '&order=' . $this->order .
-                '&userSearch=' . $this->userSearch .
-                '&page=' . ($this->curentPage+1);
+        $data = array(  'sort'  =>$this->sort,
+                'order' =>$this->order,
+                'userSearch'=>$this->userSearch,
+                'page'  =>($this->curentPage+1) );
+            
+            $link = $_SERVER['PHP_SELF'] . '?' . http_build_query($data);
         return $link;
     }
 
     function getSortLink($nameColumn)
     {
-        $sortLink = $_SERVER['PHP_SELF'] . '?sort=' . $nameColumn . '&order=';
-        if (($nameColumn <> $this->sort) or ($this->order=='DESC')) 
-        {
-            $sortLink .= 'ASC';
-        }else{
-            $sortLink .= 'DESC';
+        $data = array('sort'  => $nameColumn);
+        if (($nameColumn <> $this->sort) or ($this->order=='DESC')){
+            $data['order'] = 'ASC';
+        } else {
+            $data['order'] = 'DESC';
         }
-        $sortLink .= '&userSearch=' . $this->userSearch;
+        $data['userSearch'] = $this->userSearch;
+    
+        $sortLink = $_SERVER['PHP_SELF'] . '?' . http_build_query($data);
+        
         return $sortLink;
     }
 

@@ -72,9 +72,9 @@ class MatriculantMapper
 
    /**
     * viewMatriculant() выбирает из базы абитуриентов. 
-    * @param int $curPage, string $sort, string $order, string $userSearch, int $resultPerPage, array $columns
+    * @param int $curPage, string $sort, string $order, string $userSearch, int $resultPerPage
     */
-    public function viewMatriculant($curPage, $sort, $order, $userSearch, $resultPerPage)  
+    public function viewMatriculant( $curPage, $sort, $order, $userSearch, $resultPerPage)  
     {
         $skipResult = ($curPage - 1) * $resultPerPage;
 
